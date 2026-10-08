@@ -3,7 +3,7 @@
 一个**单文件、纯前端、双击即用**的软件工程学习打卡应用。为「大三 → 暑期实习 → 秋招」这条路线设计，
 把每天该做的事、该跟的竞赛、该练的英语、该读的开源项目，全都收进一个页面里。
 
-> 🌐 在线预览：`https://<你的用户名>.github.io/se-daily-hub/`
+> 🌐 **在线预览：[https://vivian0113com.github.io/daily_mission/](https://vivian0113com.github.io/daily_mission/)**
 > （或直接下载 `index.html`，双击用浏览器打开 —— 无需安装、无需后端、断网也能用）
 
 ---
@@ -88,8 +88,8 @@
 # 下载 index.html → 双击 → 完事
 
 # 方式二：clone 下来
-git clone https://github.com/<你的用户名>/se-daily-hub.git
-cd se-daily-hub
+git clone https://github.com/Vivian0113com/daily_mission.git
+cd daily_mission
 start index.html          # Windows
 # open index.html         # macOS
 ```
