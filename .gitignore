@@ -20,3 +20,9 @@ build/
 # 日志
 *.log
 npm-debug.log*
+
+# Windows 保留设备名（误创建时无法用常规方式删除，直接忽略）
+NUL
+CON
+PRN
+AUX
