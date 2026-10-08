@@ -1,0 +1,22 @@
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# 备份文件（历史版本不进仓库）
+*.bak
+*.bak-*
+*-旧备份/
+软件工程每日任务台.bak-*.html
+
+# 依赖与构建产物（本项目实际零依赖，防止误提交）
+node_modules/
+dist/
+build/
+
+# 日志
+*.log
+npm-debug.log*
