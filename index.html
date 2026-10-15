@@ -3715,6 +3715,246 @@ const READINGS = [
       {w:'take responsibility', p:'', m:'v. 承担责任'},
       {w:'routinely', p:'/ruːˈtiːnli/', m:'adv. 惯常地，routine地'}
     ]
+  },
+{
+    title:'What Makes an AI Agent Different From a Chatbot?', level:'基础', tags:['agent','智能体','ai','大模型','llm','面试'],
+    body:[
+      'A chatbot answers. An agent acts. That one sentence captures the difference, but the details matter more than the slogan.',
+      'When you send a message to a chatbot, you get a single reply and the interaction ends. An agent, by contrast, runs a loop. The model decides what to do next, a tool performs the action, the result flows back into the context, and the model decides again. This repeats until the task is finished or a limit is reached.',
+      'That loop requires three ingredients: a model to make decisions, tools to take action, and memory to hold state across steps. Remove any one of them and you are back to a fancy chatbot. This is why wrapping an API call in a nice interface does not make it an agent.',
+      'The practical consequence is a shift in how you build and debug. You are no longer writing a prompt that produces text. You are designing a control loop, and most of your effort goes into making that loop reliable rather than clever.'
+    ],
+    zh:['聊天机器人是「回答」，智能体是「行动」。这一句概括了区别，但细节比口号重要得多。',
+        '你给聊天机器人发一条消息，得到一条回复，交互就结束了。而智能体运行的是一个循环：模型决定下一步做什么，工具执行动作，结果流回上下文，模型再决定一次。如此反复，直到任务完成或触达某个限制。',
+        '这个循环需要三样东西：做决策的模型、执行动作的工具、跨步骤保存状态的记忆。去掉任何一样，就退回到一个包装精美的聊天机器人。这也解释了为什么把 API 调用包进一个好看的界面并不能让它变成智能体。',
+        '实际影响在于构建和调试方式的转变：你不再是在写一段产出文本的提示词，而是在设计一个控制循环。你的大部分精力会花在让这个循环变得可靠上，而非聪明上。'],
+    vocab:[
+      {w:'agent', p:'/ˈeɪdʒənt/', m:'n. 智能体，代理'},
+      {w:'interaction', p:'/ˌɪntərˈækʃn/', m:'n. 交互，互动'},
+      {w:'ingredient', p:'/ɪnˈɡriːdiənt/', m:'n. 成分，要素'},
+      {w:'consequence', p:'/ˈkɒnsɪkwəns/', m:'n. 结果，影响'},
+      {w:'reliable', p:'/rɪˈlaɪəbl/', m:'adj. 可靠的'}
+    ]
+  },
+  {
+    title:'The ReAct Loop, Explained Without Hype', level:'进阶', tags:['agent','react','智能体','大模型','推理','面试'],
+    body:[
+      'ReAct stands for Reason and Act. It is the pattern almost every agent framework starts from, and it is worth understanding before you touch any library.',
+      'In each turn, the model does three things. First it produces a thought, a short piece of reasoning about what to do next. Then it emits an action, usually a tool name with arguments. The program executes that action and appends the observation, the raw result, back into the context. The loop repeats.',
+      'Why does this work better than asking the model for the final answer directly? Because it externalises the reasoning. The model does not have to hold the whole plan in its head and commit to it at once. It can look at the world, adjust, and look again.',
+      'The debugging benefit is just as important. When an agent fails, you can read the transcript and see exactly which thought was wrong. Without an explicit loop, you get a confident but incorrect answer and no way to tell where it went off the rails.'
+    ],
+    zh:['ReAct 是 Reason（推理）加 Act（行动）的缩写。它是几乎所有智能体框架的起点，值得你在碰任何库之前先弄懂它。',
+        '在每一轮里，模型做三件事。先产出一段思考（thought），对着接下来该做什么做简短的推理。然后发出一个动作（action），通常是一个工具名加上参数。程序执行这个动作，并把观察结果（observation）——也就是原始返回值——追加回上下文。循环继续。',
+        '为什么这比直接让模型给最终答案更好？因为它把推理外化了。模型不必把整个计划装在脑子里并一次性赌上，它可以先看看世界、再调整、再看。',
+        '调试上的好处同样重要。当智能体失败时，你可以读对话记录，精确看出是哪一步的思考出了错。没有显式的循环，你只会得到一个自信但错误的答案，而且无从判断它在哪一步脱轨。'],
+    vocab:[
+      {w:'emit', p:'/iˈmɪt/', m:'v. 发出，输出'},
+      {w:'observation', p:'/ˌɒbzəˈveɪʃn/', m:'n. 观察结果'},
+      {w:'transcript', p:'/ˈtrænskrɪpt/', m:'n. 记录，对话稿'},
+      {w:'externalise', p:'/ɪkˈstɜːnəlaɪz/', m:'v. 使外化'},
+      {w:'go off the rails', p:'', m:'习语：脱轨，出岔子'}
+    ]
+  },
+  {
+    title:'Function Calling Is Not Magic, It Is JSON', level:'基础', tags:['agent','function calling','工具调用','api','大模型','面试'],
+    body:[
+      'Many developers are confused by function calling because the name suggests the model runs your code. It does not. The model only produces a structured request, and your program decides what to do with it.',
+      'Here is the actual sequence. You describe your tools to the model as a schema: a name, a description of what the tool does, and the parameters it accepts. When a user asks something that needs a tool, the model replies not with prose but with a JSON object naming the function and its arguments. Your code parses that JSON, calls the real function, and sends the return value back as a new message.',
+      'The surprising part is how much the description matters. The model chooses tools based on the text you wrote, so a vague description leads to wrong choices and malformed arguments. Writing good tool descriptions is a genuine engineering skill, not boilerplate.',
+      'Once you see function calling as schema in, JSON out, the mystery disappears. It is an interface convention, and like any interface, its quality depends on how carefully you specified it.'
+    ],
+    zh:['很多开发者被 "function calling" 这个名字误导，以为模型会运行你的代码。并不会。模型只产出一个结构化的请求，真正决定怎么处理它的是你的程序。',
+        '实际的流程是这样的：你把工具以 schema 的形式描述给模型——名字、这个工具做什么的说明、以及它接受哪些参数。当用户问了一件需要工具的事，模型回复的不是一段散文，而是一个 JSON 对象，指明要调用的函数及其参数。你的代码解析这个 JSON、调用真实函数、再把返回值作为一条新消息发回去。',
+        '最让人意外的是描述有多重要。模型是依据你写的文字来选择工具的，所以含糊的描述会导致选错工具、参数格式错误。写好工具描述是一项真正的工程技能，不是可有可无的样板。',
+        '一旦你把 function calling 看成「schema 进、JSON 出」，神秘感就消失了。它只是一种接口约定，而和任何接口一样，它的质量取决于你把规格定义得多仔细。'],
+    vocab:[
+      {w:'schema', p:'/ˈskiːmə/', m:'n. 模式，结构定义'},
+      {w:'prose', p:'/prəʊz/', m:'n. 散文，(普通)文字'},
+      {w:'parse', p:'/pɑːz/', m:'v. 解析'},
+      {w:'malformed', p:'/ˌmælˈfɔːmd/', m:'adj. 格式错误的'},
+      {w:'boilerplate', p:'/ˈbɔɪləpleɪt/', m:'n. 样板代码'}
+    ]
+  },
+  {
+    title:'MCP: Why a Standard Protocol Matters for Agents', level:'进阶', tags:['agent','mcp','协议','智能体','工具调用','面试'],
+    body:[
+      'Before the Model Context Protocol, connecting models to tools was a mess. Every application wrote custom glue for every tool it wanted to use. With N models and M tools, you end up maintaining N times M integrations, each with its own quirks and bugs.',
+      'MCP solves this the way USB-C solved cables. It defines a standard interface between a client, usually your agent application, and a server that exposes tools or data. A tool provider implements the protocol once, and every MCP-compatible client can then use it without any custom code.',
+      'The shift from N times M to N plus M sounds like a small arithmetic trick, but it changes what is economically possible. Small teams can now publish useful tool servers, because the integration cost is paid once rather than once per consumer.',
+      'For anyone entering the field now, this is one of the more promising areas to learn early. Standards have a way of becoming infrastructure, and being fluent in a protocol while it is still gaining adoption is a real advantage.'
+    ],
+    zh:['在 Model Context Protocol 出现之前，把模型接到工具上是一团乱麻。每个应用都要为它想用的每个工具写一遍定制胶水。当模型有 N 个、工具有 M 个时，你就得维护 N×M 份集成代码，每一份都有自己的脾气和 bug。',
+        'MCP 解决这个问题的方式，就像 USB-C 解决了线缆问题。它在客户端（通常是你的智能体应用）和暴露工具或数据的服务端之间定义了一个标准接口。工具提供方把协议实现一次，之后所有兼容 MCP 的客户端都能直接使用，无需任何定制代码。',
+        '从 N×M 变成 N+M 听起来只是个小小的算术把戏，但它改变了经济上可行的事情。小团队现在也能发布有用的工具服务，因为集成成本只需付一次，而不是每多一个消费者就付一次。',
+        '对现在进入这个领域的人来说，这是早期值得学习的、较有前景的方向之一。标准有一种变成基础设施的惯性，而在一项协议还在普及阶段就熟练掌握它，是实实在在的优势。'],
+    vocab:[
+      {w:'protocol', p:'/ˈprəʊtəkɒl/', m:'n. 协议'},
+      {w:'integration', p:'/ˌɪntɪˈɡreɪʃn/', m:'n. 集成，整合'},
+      {w:'quirk', p:'/kwɜːk/', m:'n. 怪癖，古怪之处'},
+      {w:'compatible', p:'/kəmˈpætəbl/', m:'adj. 兼容的'},
+      {w:'adoption', p:'/əˈdɒpʃn/', m:'n. 采用，普及'}
+    ]
+  },
+  {
+    title:'Memory in Agents: Remember More, or Remember Better?', level:'进阶', tags:['agent','记忆','上下文','智能体','向量数据库','面试'],
+    body:[
+      'A common beginner mistake is to assume that more context means better answers. In practice, stuffing every past message into the prompt makes agents slower, more expensive, and often worse, because the important instruction gets buried in noise.',
+      'Serious agents separate memory into layers. Short-term memory is the working context. It is usually trimmed with a sliding window, or compressed by asking the model to summarise older turns into a few sentences. Long-term memory lives outside the model, typically in a vector store, and is fetched back only when relevant.',
+      'The difficult question is not what to remember but what to forget. Deciding which details deserve to persist is a design decision about your product, not a technical one. An agent that remembers a user\'s preferred language forever is helpful. One that remembers an offhand complaint from six months ago may be unsettling.',
+      'Good memory design is therefore selective by default. Keep the context small, retrieve on demand, and be explicit about what earns a permanent place.'
+    ],
+    zh:['初学者常犯的一个错误，是以为上下文越多答案越好。实践中，把过去每一条消息都塞进提示词会让智能体更慢、更贵，而且往往更差——因为重要的指令被淹没在噪音里了。',
+        '成熟的做法是把记忆分层。短期记忆就是工作上下文，通常用滑动窗口裁剪，或让模型把较早的轮次压缩成几句话。长期记忆放在模型之外，通常在向量库里，只在相关时才被取回来。',
+        '真正难的问题不是记住什么，而是忘掉什么。判断哪些细节值得长期保留，是关于产品的设计决策，而不是技术问题。一个永远记得用户偏好的语言的智能体是贴心的；一个还记得半年前一句随口抱怨的智能体，则可能让人不适。',
+        '所以好的记忆设计默认是选择性的：把上下文保持精简、按需检索，并且明确什么才配得上永久保留的位置。'],
+    vocab:[
+      {w:'stuff', p:'/stʌf/', m:'v. 塞满，填塞'},
+      {w:'trim', p:'/trɪm/', m:'v. 修剪，裁减'},
+      {w:'persist', p:'/pəˈsɪst/', m:'v. 持久保存'},
+      {w:'offhand', p:'/ˌɒfˈhænd/', m:'adj. 随口说的'},
+      {w:'unsettling', p:'/ʌnˈsetlɪŋ/', m:'adj. 令人不安的'}
+    ]
+  },
+  {
+    title:'Where RAG Fits Inside an Agent', level:'进阶', tags:['agent','rag','检索','向量数据库','智能体','面试'],
+    body:[
+      'Retrieval augmented generation and agents are often mentioned together, but they are not the same thing. RAG is a technique for supplying facts. An agent is a control loop that decides what to do. The relationship is that retrieval usually becomes one of the agent\'s tools.',
+      'That distinction matters when something goes wrong. If an agent gives a wrong answer, you need to know whether it retrieved nothing useful, retrieved the right passage but ignored it, or simply never called the retrieval tool at all. Each of these has a completely different fix.',
+      'The five steps of a retrieval pipeline are chunking, embedding, searching, augmenting, and generating. Inside an agent, chunking and embedding happen ahead of time, while search and augment become a tool the model can invoke whenever it judges that it needs external knowledge.',
+      'Treating retrieval as a callable tool rather than a fixed prelude gives the agent flexibility. It can search twice with different queries, or decide that a question is answerable from its own knowledge and skip retrieval entirely. That judgement, when it works, is what separates a good agent from a rigid pipeline.'
+    ],
+    zh:['检索增强生成（RAG）和智能体经常被一起提起，但它们并不是一回事。RAG 是一种提供事实的技术，智能体则是一个决定该做什么的控制循环。二者的关系是：检索通常会成为智能体可用的工具之一。',
+        '这个区分在出问题的时候很重要。如果智能体答错了，你需要判断它是根本没检索到有用的内容、检索到了正确的段落却忽略了它，还是压根没有调用检索工具。这几种情况的修法完全不同。',
+        '检索流水线有五步：切分、向量化、搜索、增强、生成。在智能体里，切分和向量化提前离线完成，而搜索和增强则变成一个工具，模型判断自己需要外部知识时可以随时调用。',
+        '把检索当作一个可调用的工具、而不是固定的前置步骤，会让智能体更灵活。它可以用不同的查询检索两次，也可以判断某个问题靠自己已有的知识就能回答，从而完全跳过检索。这种判断力——在它奏效的时候——正是一个好智能体与僵硬流水线的区别。'],
+    vocab:[
+      {w:'retrieval', p:'/rɪˈtriːvl/', m:'n. 检索，取回'},
+      {w:'distinction', p:'/dɪˈstɪŋkʃn/', m:'n. 区别，区分'},
+      {w:'passage', p:'/ˈpæsɪdʒ/', m:'n. 段落，文段'},
+      {w:'prelude', p:'/ˈpreljuːd/', m:'n. 前奏，序幕'},
+      {w:'rigid', p:'/ˈrɪdʒɪd/', m:'adj. 僵硬的，死板的'}
+    ]
+  },
+  {
+    title:'Multi-Agent Systems: Powerful, and Usually Overkill', level:'进阶', tags:['agent','多智能体','架构','智能体','系统设计','面试'],
+    body:[
+      'Multi-agent systems are the most over-applied idea in current AI engineering. The pitch is appealing: instead of one generalist, hire a team. A researcher gathers information, a writer drafts, a critic reviews, and a manager coordinates. It sounds like good software design.',
+      'In practice, the costs arrive quickly. Every extra agent is another model call, so cost and latency multiply. Errors propagate: a small mistake by the researcher becomes a confidently wrong paragraph from the writer, and the critic may not catch it because it shares the same blind spots. Debugging becomes genuinely hard, because you are now tracing a conversation between several unpredictable participants.',
+      'The sensible rule is to exhaust the single-agent design first. Give one agent better tools, clearer instructions, and a tighter loop. Only when a task can be split along genuinely different specialisms, and the benefit clearly exceeds the coordination overhead, does a multi-agent topology pay off.',
+      'Being able to explain this trade-off calmly is more impressive in an interview than listing every framework you have heard of.'
+    ],
+    zh:['多智能体是当前 AI 工程里被过度使用最严重的一个概念。它的卖点很吸引人：与其雇一个通才，不如组一个团队。一个研究员收集信息，一个写手起草，一个批评者审阅，一个管理者协调。听起来像优秀的软件设计。',
+        '实践中，代价来得很快。每多一个智能体就是多一次模型调用，成本和延迟成倍增长。错误会沿着链路传递：研究员的一个小错，会变成写手笔下自信但错误的一整段，而批评者可能抓不到，因为它有同样的盲区。调试变得极其困难，因为你要追踪的是几个不可预测的参与者之间的对话。',
+        '合理的法则是先把单智能体方案做到极致：给它更好的工具、更清晰的指令、更紧凑的循环。只有当任务确实能沿着真正不同的专长拆开、且收益明显超过协调开销时，多智能体拓扑才划算。',
+        '能在面试中冷静讲清这个取舍，比列举你听过的所有框架更打动人。'],
+    vocab:[
+      {w:'overkill', p:'/ˌəʊvəˈkɪl/', m:'n. 过度杀伤，用力过猛'},
+      {w:'generalist', p:'/ˈdʒenrəlɪst/', m:'n. 通才'},
+      {w:'propagate', p:'/ˈprɒpəɡeɪt/', m:'v. 传播，蔓延'},
+      {w:'overhead', p:'/ˈəʊvəhed/', m:'n. 开销，额外成本'},
+      {w:'topology', p:'/təˈpɒlədʒi/', m:'n. 拓扑，结构'}
+    ]
+  },
+  {
+    title:'Guardrails: The Unglamorous Work That Makes Agents Usable', level:'进阶', tags:['agent','护栏','工程','可靠性','智能体','面试'],
+    body:[
+      'A demo agent and a production agent look identical in a screenshot. The difference is everything that happens when things go wrong, and that difference is called guardrails.',
+      'The first guardrail is a step limit. Models sometimes loop, calling the same tool repeatedly or bouncing between two options forever. Without a hard cap, a single request can consume your entire budget. A timeout plays the same role for slow tools.',
+      'The second is a tool allowlist with confirmation for anything destructive. A model that can delete records or move money should not be able to do so on its own judgement. Requiring explicit human approval for high-stakes actions converts an unbounded risk into a manageable one.',
+      'The third is a fallback path. Models time out, tools return errors, and retrieval comes back empty. If any of those collapses the entire flow, your agent is fragile. Deciding in advance what a degraded but honest response looks like is what turns a prototype into something a team can rely on.'
+    ],
+    zh:['演示用的智能体和生产环境的智能体，在截图里长得一模一样。区别在于出问题时发生的一切，而这个区别就叫护栏。',
+        '第一个护栏是步数上限。模型有时会陷入循环，反复调用同一个工具，或在两个选项之间无限来回。没有硬性上限，一次请求就能烧掉你整个预算。超时机制对慢工具起着同样的作用。',
+        '第二个是工具白名单，并对任何破坏性操作要求确认。一个能删除记录或转账的模型，不该仅凭自己的判断就能这么做。对高风险操作要求明确的人工批准，能把不可控的风险转化为可控的风险。',
+        '第三个是降级路径。模型会超时、工具会报错、检索会返回空。如果其中任何一项都能让整个流程崩掉，那你的智能体就是脆弱的。事先想好一个「降级但诚实」的响应长什么样，正是把原型变成团队可依赖之物的关键。'],
+    vocab:[
+      {w:'guardrail', p:'/ˈɡɑːdreɪl/', m:'n. 护栏，防护措施'},
+      {w:'unglamorous', p:'/ʌnˈɡlæmərəs/', m:'adj. 不起眼的，不光鲜的'},
+      {w:'destructive', p:'/dɪˈstrʌktɪv/', m:'adj. 破坏性的'},
+      {w:'high-stakes', p:'/ˌhaɪ ˈsteɪks/', m:'adj. 高风险的'},
+      {w:'degraded', p:'/dɪˈɡreɪdɪd/', m:'adj. 降级的，退化的'}
+    ]
+  },
+  {
+    title:'Evaluating an Agent When There Is No Right Answer', level:'进阶', tags:['agent','评估','测试','可观测','智能体','面试'],
+    body:[
+      'Testing a function is easy because the output is either correct or it is not. Agents break this assumption. The same request can be handled by many different sequences of tool calls, and several of them may be perfectly acceptable.',
+      'The practical answer is to build an evaluation set rather than write unit tests. Collect thirty to fifty real requests, record what a good outcome looks like for each, and re-run the whole set every time you change a prompt, a tool, or a model. Watching the pass rate move is the only reliable signal that a change helped.',
+      'Equally important is layered attribution. When a case fails, was the plan wrong, was the wrong tool chosen, or did retrieval miss the relevant document? Recording these separately tells you where to invest, instead of leaving you to guess.',
+      'Finally, keep cost and latency in the same report as accuracy. An agent that succeeds ninety-five percent of the time in eight seconds may be less useful than one that succeeds ninety percent in two seconds, depending entirely on what your users actually need.'
+    ],
+    zh:['测试一个函数很简单，因为输出要么对要么错。智能体会打破这个前提：同一个请求可以用许多不同的工具调用序列来处理，而其中好几种可能都完全可接受。',
+        '务实的做法是构建评估集，而不是写单元测试。收集三十到五十个真实请求，记录每个请求「好的结果」长什么样，然后每次改动提示词、工具或模型时都重跑一遍整个集合。看着通过率变化，是判断一次改动是否真有帮助的唯一可靠信号。',
+        '同样重要的是分层归因。当一个用例失败时，是规划错了、工具选错了，还是检索漏掉了相关文档？把它们分开记录，才能知道该往哪里投入，而不是靠猜。',
+        '最后，把成本和延迟和准确率放进同一份报告里。一个八秒内成功率九成五的智能体，可能不如一个两秒内成功率九成的智能体有用——这完全取决于你的用户真正需要什么。'],
+    vocab:[
+      {w:'evaluation', p:'/ɪˌvæljuˈeɪʃn/', m:'n. 评估'},
+      {w:'acceptable', p:'/əkˈseptəbl/', m:'adj. 可接受的'},
+      {w:'attribution', p:'/ˌætrɪˈbjuːʃn/', m:'n. 归因'},
+      {w:'invest', p:'/ɪnˈvest/', m:'v. 投入'},
+      {w:'latency', p:'/ˈleɪtənsi/', m:'n. 延迟'}
+    ]
+  },
+  {
+    title:'Why an Agent Costs More Than You Think', level:'基础', tags:['agent','成本','工程','性能','大模型','面试'],
+    body:[
+      'The first time you run an agent in production, the bill is often a surprise. The reason is that agents do not make one model call. They make many, and each call resends the growing conversation.',
+      'Consider a simple task that takes five steps. The first call carries a short prompt. The second carries the prompt plus the first exchange. The third carries all of that plus the second. Because you pay per token on the way in as well as the way out, the cost does not grow linearly with the number of steps, it grows much faster.',
+      'This is why caching and trimming are not optimisations you add later, they are core design decisions. Reuse stable prefixes where the provider supports it, summarise old turns instead of appending forever, and route simple subtasks to smaller cheaper models.',
+      'Understanding the cost curve early also changes how you design tools. A tool that returns two hundred lines of raw output when the agent only needs three fields is not just inefficient, it is expensive on every subsequent turn.'
+    ],
+    zh:['第一次把智能体跑在生产环境，账单往往会让人意外。原因是智能体不是只调一次模型，而是调很多次，而且每次调用都要把不断增长的对话重新发一遍。',
+        '想象一个需要五步的简单任务。第一次调用带的是很短的提示词；第二次带的是提示词加上第一轮交互；第三次带着上面全部再加第二轮。因为输入和输出都要按 token 付费，成本不是随步数线性增长，而是增长得快得多。',
+        '这就是为什么缓存和裁剪不是「以后再补的优化」，而是核心设计决策。在服务商支持的地方复用稳定的前缀、把旧轮次总结掉而不是无限追加、把简单的子任务路由给更小更便宜的模型。',
+        '早点理解这条成本曲线也会改变你设计工具的方式。一个在智能体只需要三个字段时却返回两百行原始输出的工具，不只是低效，而是会让之后每一轮都变贵。'],
+    vocab:[
+      {w:'bill', p:'/bɪl/', m:'n. 账单'},
+      {w:'linearly', p:'/ˈlɪniəli/', m:'adv. 线性地'},
+      {w:'optimisation', p:'/ˌɒptɪmaɪˈzeɪʃn/', m:'n. 优化'},
+      {w:'prefix', p:'/ˈpriːfɪks/', m:'n. 前缀'},
+      {w:'route', p:'/ruːt/', m:'v. 路由，分派'}
+    ]
+  },
+  {
+    title:'The Agent Prompt Is a Job Description, Not a Wish', level:'基础', tags:['agent','提示词','prompt','工程','智能体','面试'],
+    body:[
+      'People who are good at chatting with a model often struggle with agent prompts, because the two jobs are different. A chat prompt answers a question. An agent prompt defines a role that will be executed over many turns, and it has to stay coherent as the loop runs.',
+      'A useful agent prompt usually contains five parts. The role and the overall goal. The list of available tools and, crucially, when to use each one. The expected workflow, step by step. The output format. And the boundaries: what the agent must not do, and what it should do when information is missing.',
+      'That last part is the one beginners omit. Without a rule for uncertainty, a model will invent an answer rather than report that it cannot find one. Writing "if the data is not present, say so and stop" is a one-line change that prevents a whole class of embarrassing failures.',
+      'It also helps to remember that your tool descriptions are part of the prompt. A model reads them every turn, so an unclear description is an unclear instruction.'
+    ],
+    zh:['擅长和模型聊天的人，常常在写智能体提示词时卡住，因为这两件事是两种不同的活。聊天提示词是回答一个问题；智能体提示词定义的则是一个要跨越很多轮去执行的角色，它必须在循环运行的过程中始终保持自洽。',
+        '一份有用的智能体提示词通常包含五个部分：角色与总体目标；可用工具清单以及——关键的——每个工具在什么情况下用；预期的工作流程，一步一步写清；输出格式；以及边界：不能做什么，以及信息缺失时该怎么办。',
+        '最后这部分正是初学者最容易漏掉的。没有针对不确定性的规则，模型会编造一个答案，而不是报告它找不到。写上「如果数据不存在，就说明这一点并停止」，是一行改动就能防住一整类尴尬失败的。',
+        '同样值得记住的是：你的工具描述也是提示词的一部分。模型每一轮都会读到它们，所以含糊的工具描述就是含糊的指令。'],
+    vocab:[
+      {w:'coherent', p:'/kəʊˈhɪərənt/', m:'adj. 连贯的，自洽的'},
+      {w:'crucially', p:'/ˈkruːʃəli/', m:'adv. 关键地'},
+      {w:'boundary', p:'/ˈbaʊndri/', m:'n. 边界，界限'},
+      {w:'omit', p:'/əˈmɪt/', m:'v. 省略，遗漏'},
+      {w:'embarrassing', p:'/ɪmˈbærəsɪŋ/', m:'adj. 令人尴尬的'}
+    ]
+  },
+  {
+    title:'How to Learn Agent Development Without Drowning', level:'基础', tags:['agent','学习','求职','实习','智能体','面试'],
+    body:[
+      'There is an enormous amount of material about agents, and most of it is about tools that will look different in six months. A more durable way to learn is to start from the concepts, and to build small things by hand before reaching for a framework.',
+      'A workable sequence is this. First, understand how a language model behaves and what tokens, context windows, and temperature actually do. Then write one tool-calling loop yourself, without a framework, so you have seen the raw protocol. Only after that should you pick up a library, because you will then recognise what it is doing for you rather than treating it as magic.',
+      'The second phase is about evidence. Build one small agent that solves a real problem for you or a classmate, deploy it, and write an honest README that includes what did not work. A project with a candid limitations section is far more convincing in an interview than a polished demo with no story behind it.',
+      'Throughout, keep a written log of what broke and how you fixed it. That log will become your best interview material, because it is the part nobody can copy from a tutorial.'
+    ],
+    zh:['关于智能体的材料浩如烟海，而其中大部分讲的是那些半年后就会变得不一样的工具。更耐久的学习方式是从概念入手，并且在伸手拿框架之前先亲手做点小东西。',
+        '一个可行的顺序是这样的：先理解语言模型的行为，搞清 token、上下文窗口、温度到底影响什么。然后不借助框架，自己写一个工具调用循环，把最原始的协议亲眼见一遍。只有在这之后才去用库——因为那时你能识别出它替你做了什么，而不是把它当成魔法。',
+        '第二阶段关乎证据。做一个小智能体，解决你自己或同学遇到的一个真实问题，把它部署上线，并写一份诚实的 README，把没做成的部分也写进去。一个带着坦诚的「局限性」章节的项目，在面试中远比一个光鲜但没有故事的演示更有说服力。',
+        '整个过程里，坚持记录下什么坏了、你怎么修的。这份记录会成为你最好的面试素材，因为它是别人无法从教程里照抄的那部分。'],
+    vocab:[
+      {w:'durable', p:'/ˈdjʊərəbl/', m:'adj. 持久的，耐用的'},
+      {w:'sequence', p:'/ˈsiːkwəns/', m:'n. 顺序，序列'},
+      {w:'candid', p:'/ˈkændɪd/', m:'adj. 坦诚的'},
+      {w:'convincing', p:'/kənˈvɪnsɪŋ/', m:'adj. 有说服力的'},
+      {w:'tutorial', p:'/tjuːˈtɔːriəl/', m:'n. 教程'}
+    ]
   }
 ];
 
