@@ -2414,7 +2414,7 @@ const READINGS = [
         '证书是最被低估的那一环。没有身份验证的加密只能把对话藏起来，却挡不住别人冒充服务器。正是证书颁发机构（CA）体系，让那把"小锁"真正有意义。',
         '实际上现在 HTTPS 的成本几乎为零。现代硬件足以处理这些密码学运算，而会话复用让回头用户跳过大部分握手。已经没有任何理由再用明文 HTTP 提供登录页了。'],
     vocab:[
-      {w:'plain-text', p:'', m:'adj. 明文的'},
+      {w:'plain-text', p:'/ˌpleɪn ˈtekst/', m:'adj. 明文的'},
       {w:'handshake', p:'/ˈhændʃeɪk/', m:'n. 握手'},
       {w:'certificate', p:'/səˈtɪfɪkət/', m:'n. 证书'},
       {w:'authority', p:'/ɔːˈθɒrəti/', m:'n. 权威机构，管理机构'},
@@ -2639,6 +2639,993 @@ const READINGS = [
       {w:'concrete', p:'/ˈkɒŋkriːt/', m:'adj. 具体的'},
       {w:'claim', p:'/kleɪm/', m:'n. 主张，说法'},
       {w:'interrupt', p:'/ˌɪntəˈrʌpt/', m:'v. 打断'}
+    ]
+  },
+{
+    title:'Java: Write Once, Debug Everywhere',
+    level:'基础', tags:['java','jvm','字节码','后端','编译','面试'],
+    body:[
+      'Java was designed around a promise that sounded almost too good: write your program once, and run it on any machine. The trick was refusing to compile all the way down to machine code.',
+      'Instead, javac compiles your source into bytecode, a compact instruction set that no real processor understands. Each platform ships a JVM that translates bytecode into whatever the local hardware actually wants. The intermediate layer is what makes portability possible.',
+      'The same indirection explains Java\'s other prominent feature: you almost never manage memory by hand. The heap is a large region the JVM owns, and a garbage collector periodically walks it looking for objects nothing points to any more.',
+      'The cost of this convenience is that you must occasionally reason about a machine you cannot see. Stop-the-world pauses, heap sizing, and object promotion between generations are the price of never writing free().'
+    ],
+    zh:['Java 诞生时围绕着一个听起来好得不真实的承诺：程序写一次，就能在任何机器上跑。诀窍在于——它拒绝把代码一路编译到机器码。',
+        '取而代之的是，javac 把你的源码编译成字节码（bytecode），一套没有任何真实处理器认识的紧凑指令集。每个平台都自带一个 JVM，负责把字节码翻译成本地硬件真正想要的东西。正是这一层中间层，让可移植性成为可能。',
+        '同样的这层"间接"也解释了 Java 另一个显著特性：你几乎从不需要手工管理内存。堆（heap）是 JVM 拥有的一大片区域，垃圾回收器会周期性地遍历它，找出不再被任何东西指向的对象。',
+        '这份便利的代价是：你偶尔必须去推理一台你看不见的机器。Stop-the-world 停顿、堆大小设定、对象在分代之间的晋升，就是你从不写 free() 的代价。'],
+    vocab:[
+      {w:'bytecode', p:'/ˈbaɪtkəʊd/', m:'n. 字节码'},
+      {w:'portability', p:'/ˌpɔːtəˈbɪləti/', m:'n. 可移植性'},
+      {w:'indirection', p:'/ˌɪndəˈrekʃn/', m:'n. 间接层'},
+      {w:'garbage collector', p:'', m:'n. 垃圾回收器（GC）'},
+      {w:'promotion', p:'/prəˈməʊʃn/', m:'n.（对象）晋升'}
+    ]
+  },
+  {
+    title:'Interfaces and the Art of Depending on Less',
+    level:'进阶', tags:['java','设计模式','接口','面向对象','架构','重构'],
+    body:[
+      'A beginner writes classes that call other classes. An experienced engineer writes classes that call interfaces. The shift looks like a small syntactic preference, but it changes what a redesign costs.',
+      'When class A holds a reference to concrete class B, changing B forces you to reconsider A. Multiply that across a large codebase and the whole system becomes one brittle unit where nothing can move without everything moving.',
+      'An interface inverts the dependency. Instead of the caller knowing the implementation, the implementation promises to satisfy a contract the caller defines. Now you can swap a database for an in-memory fake in tests without touching business logic.',
+      'This is why interfaces appear everywhere in mature Java code even when there is only one implementation. The interface is not documenting today\'s reality, it is buying the freedom to change tomorrow\'s.'
+    ],
+    zh:['新手写的类直接调用别的类；有经验的工程师写的类调用的是接口。这个转变看起来只是个语法偏好，但它决定了"重新设计"要付出多少代价。',
+        '当类 A 持有具体类 B 的引用时，改动 B 就逼着你重新考虑 A。把这种耦合放大到整个代码库，整套系统就变成一个脆弱的整体——不动则已，一动就得全动。',
+        '接口把依赖关系倒转了过来。不再是调用方去了解实现，而是实现方承诺满足调用方定义的契约。这样你就可以在测试里把数据库换成内存里的假对象，而完全不碰业务逻辑。',
+        '这就是为什么在成熟的 Java 代码里，即使只有一个实现，接口也随处可见。接口不是在记录今天的现实，而是在买下明天改动的自由。'],
+    vocab:[
+      {w:'concrete', p:'/ˈkɒŋkriːt/', m:'adj. 具体的（非抽象的）'},
+      {w:'brittle', p:'/ˈbrɪtl/', m:'adj. 脆弱的，易碎的'},
+      {w:'invert', p:'/ɪnˈvɜːt/', m:'v. 倒转，反转'},
+      {w:'contract', p:'/ˈkɒntrækt/', m:'n. 契约，约定'},
+      {w:'business logic', p:'', m:'n. 业务逻辑'}
+    ]
+  },
+  {
+    title:'Spring Boot: Convention Over Configuration',
+    level:'进阶', tags:['spring','springboot','java','后端','框架','面试'],
+    body:[
+      'Setting up an enterprise Java application used to be an exercise in XML archaeology. Dozens of files declared which classes existed, how they wired together, and what each layer was responsible for.',
+      'Spring Boot changed the default. If you follow its conventions, it assumes you want the standard configuration and starts the application with a single annotation. Only when you deviate do you write anything explicit.',
+      'The mechanism underneath is component scanning plus auto-configuration. Spring walks your package looking for annotated classes, builds a graph of dependencies, and injects collaborators into constructors. Auto-configuration then says: I see a database driver on the classpath, so I will configure a connection pool with sensible defaults.',
+      'The lesson generalises beyond Spring. Every explicit configuration line is a maintenance burden and a chance to be wrong. Good frameworks make the common case invisible and the exceptional case possible.'
+    ],
+    zh:['以前搭一个企业级 Java 应用，像是在做 XML 考古。几十个文件声明了有哪些类、它们怎么装配、每一层负责什么。',
+        'Spring Boot 改变了默认值。只要你遵循它的约定，它就假定你想要标准配置，用一个注解就能把应用启动起来。只有当你偏离约定时，才需要写显式配置。',
+        '底层的机制是组件扫描加上自动配置。Spring 会遍历你的包，找到带注解的类，构建依赖图，并把协作者注入到构造函数里。接着自动配置会说：我在 classpath 上看到数据库驱动了，那我就用一个合理默认值给你配好连接池。',
+        '这个教训可以推广到 Spring 之外。每一行显式配置都是维护负担，也都是出错的机会。好的框架让常见情况变得不可见，让例外情况成为可能。'],
+    vocab:[
+      {w:'convention', p:'/kənˈvenʃn/', m:'n. 约定，惯例'},
+      {w:'annotation', p:'/ˌænəˈteɪʃn/', m:'n. 注解'},
+      {w:'dependency injection', p:'', m:'n. 依赖注入'},
+      {w:'classpath', p:'/ˈklɑːspæθ/', m:'n. 类路径'},
+      {w:'generalise', p:'/ˈdʒenrəlaɪz/', m:'v. 推广，泛化'}
+    ]
+  },
+  {
+    title:'Why Your SQL Query Is Slow',
+    level:'基础', tags:['数据库','sql','性能','索引','mysql','后端'],
+    body:[
+      'A query that returns instantly with a thousand rows can take thirty seconds with a million. Almost nothing about the SQL changed. What changed is the strategy the database chose to answer it.',
+      'The most common culprit is a full table scan. When there is no usable index, the engine has no choice but to read every row and test the condition one by one. This is fine for small tables and fatal for large ones.',
+      'The second common cause is subtler. You wrote a condition on an indexed column, but wrapped it in a function: WHERE YEAR(created_at) = 2026. The index is on created_at, not on YEAR(created_at), so the engine cannot use it.',
+      'Before optimising, look at the plan. EXPLAIN tells you which indexes were considered, which were used, and how many rows the engine expects to examine. Guessing about query performance is a reliable way to waste a week.'
+    ],
+    zh:['一条查询在一千行时瞬间返回，在一百万行时却要三十秒。SQL 本身几乎没变，变的是数据库为回答它而选择的策略。',
+        '最常见的元凶是全表扫描。当没有可用的索引时，引擎别无选择，只能逐行读取并逐个判断条件。这对小表没问题，对大表是致命的。',
+        '第二个常见原因更隐蔽：你在带索引的列上写了条件，却把它包进了函数里——WHERE YEAR(created_at) = 2026。索引建在 created_at 上，而不是 YEAR(created_at) 上，所以引擎用不了它。',
+        '优化之前，先看执行计划。EXPLAIN 会告诉你考虑了哪些索引、实际用了哪一个、以及引擎预计要检查多少行。靠猜来调查询性能，是浪费一整周的可靠方式。'],
+    vocab:[
+      {w:'full table scan', p:'', m:'n. 全表扫描'},
+      {w:'culprit', p:'/ˈkʌlprɪt/', m:'n. 元凶，肇因'},
+      {w:'subtle', p:'/ˈsʌtl/', m:'adj. 隐蔽的，微妙的'},
+      {w:'execution plan', p:'', m:'n. 执行计划'},
+      {w:'fatal', p:'/ˈfeɪtl/', m:'adj. 致命的'}
+    ]
+  },
+  {
+    title:'Normalisation and When to Break It',
+    level:'进阶', tags:['数据库','范式','设计','sql','性能','架构'],
+    body:[
+      'Normalisation is the discipline of storing each fact exactly once. If a customer\'s address appears in three tables, you have created three places where it can disagree with itself.',
+      'The classical rules take you through first, second and third normal form. In practice most of the benefit arrives with the first two: eliminate repeating groups, and make every column depend on the key rather than on some other non-key column.',
+      'But strictly normalised schemas pay for their purity at read time. Answering a single screen may require six joins, and joins get expensive as tables grow. This is why production systems often deliberately denormalise.',
+      'The right question is never "is this normalised" but "what is this table optimised for". Write-heavy transactional tables usually want normalisation. Read-heavy analytical tables often want the opposite, and say so explicitly in their design.'
+    ],
+    zh:['范式（normalisation）是一门"每个事实只存一次"的纪律。如果一位客户的地址出现在三张表里，你就创造了三处可能互相矛盾的地方。',
+        '经典规则会带你走过第一、第二、第三范式。实践中，大部分收益在前两范式就已经拿到了：消除重复组，让每一列都依赖于主键，而不是依赖于某个非主键列。',
+        '但严格范式的表结构，会在读取时为其纯粹性付出代价。要支撑一个界面，可能需要六次 join，而 join 随着表变大越来越贵。这就是生产系统常常刻意反范式的原因。',
+        '正确的问题从来不是"这个表够不够范式"，而是"这张表是为哪种场景优化的"。写密集的事务型表通常要范式；读密集的分析型表常常正相反，并且要在设计里明确写出来。'],
+    vocab:[
+      {w:'normalisation', p:'/ˌnɔːməlaɪˈzeɪʃn/', m:'n. 范式化，规范化'},
+      {w:'repeating group', p:'', m:'n. 重复组'},
+      {w:'purity', p:'/ˈpjʊərəti/', m:'n. 纯粹性'},
+      {w:'denormalise', p:'/ˌdiːˈnɔːməlaɪz/', m:'v. 反范式化'},
+      {w:'transactional', p:'/trænˈzækʃənl/', m:'adj. 事务型的'}
+    ]
+  },
+  {
+    title:'Transactions and the ACID Promise',
+    level:'进阶', tags:['数据库','事务','acid','并发','后端','面试'],
+    body:[
+      'A transaction is a promise that a group of operations will be treated as one. Either all of them take effect, or none of them do. Without that promise, moving money between two accounts is impossible to get right.',
+      'ACID is the shorthand for the four guarantees. Atomicity means all or nothing. Consistency means the database moves from one valid state to another. Isolation means concurrent transactions do not see each other\'s half-finished work. Durability means committed data survives a crash.',
+      'Isolation is where the theory meets hard trade-offs. Perfect isolation would mean running transactions strictly one after another, which destroys throughput. Real databases therefore offer levels, each permitting specific anomalies.',
+      'The practical rule is to know which anomaly you are actually exposed to. A report that is a few seconds stale is usually fine. A double-charged customer is not. Choose the weakest isolation level that still protects what you cannot afford to get wrong.'
+    ],
+    zh:['事务（transaction）是一个承诺：一组操作会被当作一个整体来对待。要么全部生效，要么全部不生效。没有这个承诺，"在两个账户间转账"就无法做对。',
+        'ACID 是四项保证的缩写。原子性指全有或全无；一致性指数据库从一个合法状态进入另一个合法状态；隔离性指并发事务看不到彼此做到一半的工作；持久性指已提交的数据能挺过崩溃。',
+        '隔离性正是理论与艰难取舍交锋的地方。完美隔离意味着事务严格串行执行，那会摧毁吞吐量。所以真实数据库提供多个隔离级别，每一级都允许特定的异常发生。',
+        '实践中的规则是：搞清楚你真正暴露在哪种异常之下。一份晚几秒的报表通常没关系；一个被重复扣款的客户则不行。选那个最弱、但仍能保护你"绝不能搞错"之事的隔离级别。'],
+    vocab:[
+      {w:'atomicity', p:'/ˌætəˈmɪsəti/', m:'n. 原子性'},
+      {w:'isolation', p:'/ˌaɪsəˈleɪʃn/', m:'n. 隔离性'},
+      {w:'durability', p:'/ˌdjʊərəˈbɪləti/', m:'n. 持久性'},
+      {w:'throughput', p:'/ˈθruːpʊt/', m:'n. 吞吐量'},
+      {w:'anomaly', p:'/əˈnɒməli/', m:'n. 异常，反常'}
+    ]
+  },
+  {
+    title:'Why Python Feels Like Pseudocode',
+    level:'基础', tags:['python','语言','编程','入门','语法','面试'],
+    body:[
+      'Python is often described as executable pseudocode, and the comparison is not just flattery. Its syntax was deliberately designed so that a reader can understand the intent of a program without knowing the language.',
+      'Indentation carries meaning. There are no braces to close and no semicolons to forget. The language forces you into a layout that happens to be what most people would have chosen anyway.',
+      'The deeper design choice is dynamic typing. A variable is a name bound to an object, not a box with a fixed shape. This removes a great deal of ceremony and makes prototyping extremely fast.',
+      'The trade-off is that many mistakes become runtime errors instead of compile-time ones. Modern Python offsets this with type hints, which do not change how the code runs but let static analysers catch errors before you ship.'
+    ],
+    zh:['Python 常被形容成"可执行的伪代码"，这个类比并不只是奉承。它的语法是被刻意设计成：读者即使不懂这门语言，也能看懂程序的意图。',
+        '缩进是有含义的。没有大括号要闭合，没有分号会忘记写。语言强制你使用一种恰好就是大多数人本来也会选择的排版。',
+        '更深层的设计选择是动态类型。变量是绑定到对象的"名字"，而不是一个形状固定的盒子。这省掉了大量形式上的繁文缛节，让原型开发极快。',
+        '代价是很多错误从编译期错误变成了运行期错误。现代 Python 用类型标注（type hints）来弥补：它们不改变代码怎么跑，但能让静态分析器在你上线前就抓出错误。'],
+    vocab:[
+      {w:'pseudocode', p:'/ˈsjuːdəʊkəʊd/', m:'n. 伪代码'},
+      {w:'flattery', p:'/ˈflætəri/', m:'n. 奉承，恭维'},
+      {w:'indentation', p:'/ˌɪndenˈteɪʃn/', m:'n. 缩进'},
+      {w:'dynamic typing', p:'', m:'n. 动态类型'},
+      {w:'ceremony', p:'/ˈserəməni/', m:'n. 繁文缛节，仪式'}
+    ]
+  },
+  {
+    title:'Python Generators: Lazy Evaluation in Practice',
+    level:'进阶', tags:['python','生成器','迭代器','性能','内存','进阶'],
+    body:[
+      'A list holds every element at once. A generator holds only the recipe for producing them. For small data the difference is academic; for a ten-gigabyte log file it is the difference between working and not working.',
+      'Any function containing yield becomes a generator. When called, it does not run at all. It returns an object that remembers where it is, and produces values one at a time as they are requested.',
+      'The practical pattern is a pipeline. Read lines from a file, filter them, parse them, aggregate them. Written as generators, none of these stages materialises the full dataset, so memory stays flat no matter how large the input grows.',
+      'The main cost is that generators are single-use. Once exhausted, they are done. This surprises people constantly, and it is the reason a generator that behaves correctly in a test can return nothing in production.'
+    ],
+    zh:['列表会一次性持有所有元素；生成器只持有"生产它们的方法"。对小数据来说，这个差别只是学术问题；对一个十 GB 的日志文件来说，这是能跑和不能跑的区别。',
+        '任何包含 yield 的函数都会变成生成器。被调用时它根本不执行，而是返回一个对象，这个对象记得自己走到哪了，并按需一次产出一个值。',
+        '实践中常用的模式是流水线：从文件读行、过滤、解析、聚合。如果都用生成器写，这些阶段没有一个会把完整数据集落到内存里，所以无论输入多大，内存都保持平稳。',
+        '主要代价是生成器只能消费一次——遍历完就结束了。这一点常常让人措手不及，也正是"测试里行为正确的生成器到了生产环境却什么都返回不出来"的原因。'],
+    vocab:[
+      {w:'lazy evaluation', p:'', m:'n. 惰性求值'},
+      {w:'generator', p:'/ˈdʒenəreɪtə/', m:'n. 生成器'},
+      {w:'yield', p:'/jiːld/', m:'v. 产出，让出'},
+      {w:'pipeline', p:'/ˈpaɪplaɪn/', m:'n. 流水线，管道'},
+      {w:'exhaust', p:'/ɪɡˈzɔːst/', m:'v. 耗尽，用完'}
+    ]
+  },
+  {
+    title:'Decorators: Wrapping Behaviour Without Editing It',
+    level:'进阶', tags:['python','装饰器','高阶函数','重构','设计模式','进阶'],
+    body:[
+      'You have three functions that all need to log how long they took. The naive fix is to add timing code to each of them. The moment a fourth appears, you have a maintenance problem.',
+      'A decorator solves this by taking a function, wrapping it in another function, and returning the wrapper. The original code is untouched, and the new behaviour is applied at the definition site with a single line.',
+      'This works because Python treats functions as ordinary objects. They can be passed as arguments, returned as results, and stored in variables. A decorator is simply a function that accepts a function and returns a function.',
+      'The same idea covers caching, retrying, permission checks and validation. Whenever you find yourself pasting the same three lines into five places, that is usually a signal that a decorator wants to exist.'
+    ],
+    zh:['你有三个函数都需要记录各自耗时。最笨的修法是给每个函数都加上计时代码。一旦出现第四个，你就有了维护问题。',
+        '装饰器（decorator）的解法是：接收一个函数，把它包进另一个函数，再返回这个包装层。原始代码完全不动，新行为在定义处用一行就生效了。',
+        '这能成立，是因为 Python 把函数当作普通对象：可以作为参数传入、作为结果返回、赋给变量。装饰器不过是一个"接收函数并返回函数"的函数。',
+        '同样的思路还覆盖了缓存、重试、权限校验和参数校验。每当你发现自己把同样的三行代码复制到五个地方，这通常就是"某个装饰器该诞生了"的信号。'],
+    vocab:[
+      {w:'decorator', p:'/ˈdekəreɪtə/', m:'n. 装饰器'},
+      {w:'wrapper', p:'/ˈræpə/', m:'n. 包装层'},
+      {w:'naive', p:'/naɪˈiːv/', m:'adj. 天真的，最笨的'},
+      {w:'untouched', p:'/ʌnˈtʌtʃt/', m:'adj. 未被改动的'},
+      {w:'signal', p:'/ˈsɪɡnəl/', m:'n. 信号，迹象'}
+    ]
+  },
+  {
+    title:'JavaScript: One Thread, Endless Waiting',
+    level:'基础', tags:['javascript','异步','事件循环','前端','node','面试'],
+    body:[
+      'JavaScript runs your code on a single thread. This sounds like a crippling limitation, yet it powers some of the busiest applications in the world. The resolution is that waiting and working are treated as completely different things.',
+      'The engine has one call stack and one task queue. Synchronous code runs to completion. When you schedule something asynchronous, the work is handed off, and a callback is placed on the queue to be run when the stack is finally empty.',
+      'This is the event loop. It is why a slow synchronous loop freezes the entire page: nothing else can run until the stack empties. It is also why a fetch does not freeze anything, even though the network is far slower than any loop.',
+      'Understanding this model removes most of the confusion around async code. The question is rarely what order the code is written in. The question is which stack each piece of code is running on.'
+    ],
+    zh:['JavaScript 在单线程上运行你的代码。这听起来像个致命局限，但它却支撑着世界上一些最繁忙的应用。答案在于："等待"和"计算"被当成了两件完全不同的事。',
+        '引擎有一个调用栈和一个任务队列。同步代码会一直执行到结束。当你安排一件异步工作时，工作被交出去，同时一个回调被放进队列，等调用栈最终清空时再执行。',
+        '这就是事件循环（event loop）。它解释了为什么一个慢的同步循环会冻住整个页面：调用栈没清空，别的什么都跑不了。它也解释了为什么一次 fetch 不会冻住任何东西——尽管网络比任何循环都慢得多。',
+        '理解这个模型，能消除关于异步代码的大部分困惑。问题很少是"代码是按什么顺序写的"，而往往是"每一段代码跑在哪个栈上"。'],
+    vocab:[
+      {w:'crippling', p:'/ˈkrɪplɪŋ/', m:'adj. 严重损害的'},
+      {w:'call stack', p:'', m:'n. 调用栈'},
+      {w:'task queue', p:'', m:'n. 任务队列'},
+      {w:'event loop', p:'', m:'n. 事件循环'},
+      {w:'synchronous', p:'/ˈsɪŋkrənəs/', m:'adj. 同步的'}
+    ]
+  },
+  {
+    title:'TypeScript: Types That Do Not Exist at Runtime',
+    level:'进阶', tags:['typescript','javascript','类型','前端','工程','面试'],
+    body:[
+      'The single most useful thing to know about TypeScript is that it disappears. Types are checked while you write the code, then erased before the code runs. Nothing you declare survives into the browser.',
+      'That erasure explains a class of confusing runtime bugs. A type assertion does not validate anything. Writing as User tells the compiler to believe you; it does not check whether the object actually is one.',
+      'What the type system is genuinely good at is making invalid states hard to express. If a function can return either a success or an error, a discriminated union forces the caller to handle both. The compiler becomes a checklist that never gets tired.',
+      'The practical payoff is refactoring confidence. Renaming a field and having the compiler point to the forty places it is used is a task that would otherwise cost an afternoon and one production incident.'
+    ],
+    zh:['关于 TypeScript，最有用的一条认知是：它会消失。类型在你写代码时被检查，然后在代码运行前被擦除。你声明的任何东西都不会存活到浏览器里。',
+        '这个"擦除"解释了一类令人困惑的运行期 bug：类型断言并不校验任何东西。写 `as User` 是告诉编译器相信你，它并不会检查这个对象到底是不是 User。',
+        '类型系统真正擅长的是：让"非法状态"难以被表达出来。如果一个函数可能返回成功或错误，可辨识联合（discriminated union）会强制调用方把两种情况都处理掉。编译器成了一个永远不会累的检查清单。',
+        '实际回报是重构时的信心。改一个字段名，然后让编译器指出它被用到的四十个地方——这件事如果手工做，代价是一个下午加一次线上事故。'],
+    vocab:[
+      {w:'erase', p:'/ɪˈreɪz/', m:'v. 擦除'},
+      {w:'assertion', p:'/əˈsɜːʃn/', m:'n. 断言'},
+      {w:'discriminated union', p:'', m:'n. 可辨识联合'},
+      {w:'validate', p:'/ˈvælɪdeɪt/', m:'v. 校验'},
+      {w:'payoff', p:'/ˈpeɪɔːf/', m:'n. 回报，收益'}
+    ]
+  },
+  {
+    title:'React and the Idea of Declarative UI',
+    level:'基础', tags:['react','前端','组件','声明式','javascript','面试'],
+    body:[
+      'Imperative UI programming means describing every step: find this element, change its text, add that class, hide the other one. As interfaces grow, the number of steps you must remember grows faster than the interface itself.',
+      'React replaced the steps with a description. You write a function that, given some data, returns what the screen should look like. You never tell the browser how to get there, only where you want to end up.',
+      'The magic is reconciliation. When your data changes, React produces a new description, compares it with the previous one, and computes the minimal set of real DOM operations needed. You think in terms of state; it thinks in terms of mutations.',
+      'This is why the most common React bug is state that is updated directly. Mutating an object does not produce a new description, so React has no way to notice that anything changed.'
+    ],
+    zh:['命令式（imperative）的界面编程意味着描述每一个步骤：找到这个元素、改它的文字、加上那个 class、把另一个隐藏掉。随着界面变复杂，你必须记住的步骤数量增长得比界面本身还快。',
+        'React 把这些步骤换成了一份"描述"。你写一个函数：给定某些数据，返回界面应该长什么样。你从不告诉浏览器怎么走过去，只说你想到达哪里。',
+        '魔法在于协调（reconciliation）。当数据变化时，React 生成一份新描述，与上一份比较，然后计算出所需的最小真实 DOM 操作集合。你用状态思考，它用变更操作思考。',
+        '这就是为什么 React 里最常见的 bug 是"直接修改了状态"。直接改对象不会产生新描述，所以 React 无从察觉任何变化。'],
+    vocab:[
+      {w:'imperative', p:'/ɪmˈperətɪv/', m:'adj. 命令式的'},
+      {w:'declarative', p:'/dɪˈklærətɪv/', m:'adj. 声明式的'},
+      {w:'reconciliation', p:'/ˌrekənsɪliˈeɪʃn/', m:'n. 协调，比对'},
+      {w:'mutation', p:'/mjuːˈteɪʃn/', m:'n. 变更，修改'},
+      {w:'minimal', p:'/ˈmɪnɪml/', m:'adj. 最小的'}
+    ]
+  },
+  {
+    title:'What State Management Is Really About',
+    level:'进阶', tags:['前端','状态管理','redux','架构','react','设计'],
+    body:[
+      'Every front-end state library is answering one question: when this piece of data changes, who needs to know? Frameworks differ mainly in how they answer, not in what they are for.',
+      'The simplest answer is prop drilling, passing data down through every layer. It works until a value must travel through six components that do not care about it. Those components now depend on something they have no business knowing.',
+      'A shared store moves the data outside the tree. Components subscribe to the parts they care about. The components in between stop being couriers, and adding a new consumer no longer requires editing the path to it.',
+      'The trap is reaching for a global store too early. Local state, lifted one level, solves most problems. A store earns its complexity when several distant parts of the application genuinely need to stay consistent with each other.'
+    ],
+    zh:['每一个前端状态库都在回答同一个问题：当这份数据变化时，谁需要知道？框架之间的差别主要在于怎么回答，而不在于它们是为了什么而存在。',
+        '最简单的答案是逐层传递（prop drilling）：把数据一层层往下传。它能用，直到某个值必须穿过六个根本不关心它的组件。这些组件从此依赖了它们本不该知道的东西。',
+        '共享 store 把数据挪到了组件树之外。组件订阅自己关心的那部分。夹在中间的组件不再是"信使"，而增加一个新的消费方也不再需要改动通往它的那条链路。',
+        '陷阱在于过早引入全局 store。把本地状态"提升一层"就能解决大多数问题。只有当应用里几个相距很远的部位确实需要彼此保持一致时，store 才值得它带来的复杂度。'],
+    vocab:[
+      {w:'prop drilling', p:'', m:'n. 逐层透传属性'},
+      {w:'courier', p:'/ˈkʊriə/', m:'n. 信使，传递者'},
+      {w:'subscribe', p:'/səbˈskraɪb/', m:'v. 订阅'},
+      {w:'trap', p:'/træp/', m:'n. 陷阱'},
+      {w:'consistent', p:'/kənˈsɪstənt/', m:'adj. 一致的'}
+    ]
+  },
+  {
+    title:'CSS Layout: From Floats to Grid',
+    level:'基础', tags:['css','布局','flexbox','grid','前端','面试'],
+    body:[
+      'For most of the web\'s history, page layout was done with tables and floats. These were never designed for layout. Developers built entire frameworks whose main job was to work around their limitations.',
+      'Flexbox solved layout in one dimension: distribute items along a row or a column, control how they grow, shrink and align. It made centring an element, once a notorious puzzle, a two-property operation.',
+      'Grid solved the other dimension. You define rows and columns, then place items into cells. Layouts that required nested floats and clearfix hacks became a dozen declarative lines.',
+      'Knowing both matters because they answer different questions. Reach for flexbox when things flow in one direction. Reach for grid when the structure itself is a lattice.'
+    ],
+    zh:['在 Web 的大部分历史里，页面布局是用表格和浮动（float）做的。它们从来就不是为布局设计的。开发者搭出了整个框架，而框架的主要工作就是绕开它们自身的局限。',
+        'Flexbox 解决了一个维度上的布局：沿一行或一列分配条目，控制它们如何伸缩与对齐。它把"让一个元素居中"这件事——曾经是个臭名昭著的难题——变成了两个属性的操作。',
+        'Grid 解决了另一个维度。你定义行和列，然后把条目放进格子里。那些原本要靠嵌套浮动和 clearfix 黑科技才能实现的布局，变成了十几行声明式代码。',
+        '两个都要会，因为它们回答的是不同的问题：当内容沿一个方向流动时用 flexbox；当结构本身就是一张网格时用 grid。'],
+    vocab:[
+      {w:'float', p:'/fləʊt/', m:'n.（CSS）浮动'},
+      {w:'notorious', p:'/nəʊˈtɔːriəs/', m:'adj. 臭名昭著的'},
+      {w:'distribute', p:'/dɪˈstrɪbjuːt/', m:'v. 分配，分布'},
+      {w:'lattice', p:'/ˈlætɪs/', m:'n. 格栅，网格'},
+      {w:'declarative', p:'/dɪˈklærətɪv/', m:'adj. 声明式的'}
+    ]
+  },
+  {
+    title:'The Browser Rendering Pipeline',
+    level:'进阶', tags:['浏览器','性能','渲染','前端','优化','面试'],
+    body:[
+      'When you change something on a page, the browser does not simply repaint the pixels you touched. There is a pipeline, and knowing its stages tells you which properties are cheap to animate and which are expensive.',
+      'First comes style calculation: matching CSS rules to elements. Then layout, where the browser computes the position and size of every box. Layout is expensive because changing one element\'s size can move everything after it.',
+      'Next is paint, filling in the actual pixels, and finally composite, assembling layers on the GPU. Animating transform and opacity can skip layout and paint entirely, which is why they run smoothly while animating width does not.',
+      'The practical upshot is a rule of thumb. If you must animate, animate transform and opacity. If you touch a property that affects geometry, expect the browser to redo the work for a large part of the page.'
+    ],
+    zh:['当你改动页面上某个东西时，浏览器并不是简单地重绘你碰到的那几个像素。它有一条流水线，而了解它的各个阶段，就能知道哪些属性做动画便宜、哪些昂贵。',
+        '首先是样式计算：把 CSS 规则匹配到元素上。然后是布局（layout），浏览器在这里计算每一个盒子的位置和尺寸。布局昂贵的原因是：改动一个元素的尺寸，可能把它后面的所有东西都挪动。',
+        '接着是绘制（paint），真正填入像素；最后是合成（composite），在 GPU 上把各图层拼装起来。让 transform 和 opacity 做动画可以完全跳过布局和绘制——这就是为什么它们动起来很流畅，而给 width 做动画不流畅。',
+        '实践中的经验法则是：如果非要做动画，就动 transform 和 opacity。如果你碰了会影响几何的属性，就做好浏览器把页面很大一部分重算一遍的准备。'],
+    vocab:[
+      {w:'pipeline', p:'/ˈpaɪplaɪn/', m:'n. 流水线'},
+      {w:'composite', p:'/ˈkɒmpəzɪt/', m:'v. 合成，合层'},
+      {w:'geometry', p:'/dʒiˈɒmətri/', m:'n. 几何（尺寸与位置）'},
+      {w:'upshot', p:'/ˈʌpʃɒt/', m:'n. 结果，结论'},
+      {w:'rule of thumb', p:'', m:'习语：经验法则'}
+    ]
+  },
+  {
+    title:'System Design: Start With the Requirements',
+    level:'进阶', tags:['系统设计','面试','架构','分布式','设计','后端'],
+    body:[
+      'In a system design interview, the biggest mistake is drawing boxes too early. Before architecture, there are questions, and the questions are usually what the interviewer is actually evaluating.',
+      'Start with scale. How many users, how many requests per second, how much data, and how fast does it need to grow? A design that serves a thousand users and one that serves a hundred million are different problems, and the same diagram cannot be right for both.',
+      'Then clarify what matters most. Is this read-heavy or write-heavy? Is strong consistency required, or is a few seconds of staleness acceptable? Every one of these answers eliminates entire categories of design.',
+      'Only then should you propose components. A candidate who asks five good questions and draws a simple, well-justified design outperforms one who draws an elaborate diagram and cannot explain why any part of it exists.'
+    ],
+    zh:['在系统设计面试里，最大的错误是太早开始画框框。架构之前先有问题，而这些问题通常才是面试官真正在考察的东西。',
+        '从规模开始问。多少用户、每秒多少请求、多少数据、增长速度多快？服务一千个用户的设计和服务一亿个用户的设计是不同的问题，同一张图不可能对两者都正确。',
+        '接着问清楚什么最重要。这是读密集还是写密集？需要强一致，还是允许几秒的延迟？每一个答案，都会直接排除掉整类的设计选项。',
+        '到这时才该提组件。一个问了五个好问题、画出简单且论据充分的设计的候选人，表现会优于一个画了精美架构图、却解释不了其中任何一部分为何存在的人。'],
+    vocab:[
+      {w:'requirement', p:'/rɪˈkwaɪəmənt/', m:'n. 需求'},
+      {w:'scale', p:'/skeɪl/', m:'n. 规模'},
+      {w:'clarify', p:'/ˈklærəfaɪ/', m:'v. 澄清，明确'},
+      {w:'staleness', p:'/ˈsteɪlnəs/', m:'n.（数据）陈旧度'},
+      {w:'elaborate', p:'/ɪˈlæbərət/', m:'adj. 精细复杂的'}
+    ]
+  },
+  {
+    title:'Rate Limiting: Protecting a System From Its Users',
+    level:'进阶', tags:['系统设计','限流','api','架构','安全','后端'],
+    body:[
+      'Every public service will eventually receive more requests than it can serve. Rate limiting is how a system decides, in advance, which of those requests it is willing to refuse.',
+      'The simplest algorithm is a fixed window: allow a thousand requests per minute, reset the counter every minute. It is trivially cheap, and it has an obvious flaw. A client can send a thousand requests at the end of one window and another thousand at the start of the next.',
+      'Sliding windows and token buckets smooth that out. A bucket refills at a steady rate, and each request consumes a token. Bursts are permitted up to the bucket size, then throttled to the refill rate.',
+      'The design question that matters most is not the algorithm but the response. A rejected request should come back with a clear status and a Retry-After header. Silent dropping looks like a network failure, and users will simply retry harder.'
+    ],
+    zh:['每一个公开服务最终都会收到超出它服务能力的请求。限流（rate limiting）就是一个系统提前决定：这些请求里，哪些它愿意拒绝。',
+        '最简单的算法是固定窗口：每分钟允许一千次请求，每分钟重置计数器。它便宜到几乎免费，但有个明显的缺陷——客户端可以在这个窗口末尾发一千次，在下个窗口开头再发一千次。',
+        '滑动窗口和令牌桶能把这个抹平。令牌桶以稳定速率补充令牌，每个请求消耗一个令牌。突发流量在桶容量之内是允许的，超过之后就被压到补充速率上。',
+        '最关键的设计问题不是算法，而是响应方式。被拒绝的请求应该返回明确的状态码和 Retry-After 头。静默丢弃看起来就像网络故障，用户只会更用力地重试。'],
+    vocab:[
+      {w:'refuse', p:'/rɪˈfjuːz/', m:'v. 拒绝'},
+      {w:'token bucket', p:'', m:'n. 令牌桶'},
+      {w:'burst', p:'/bɜːst/', m:'n. 突发（流量）'},
+      {w:'throttle', p:'/ˈθrɒtl/', m:'v. 限流，节流'},
+      {w:'silent', p:'/ˈsaɪlənt/', m:'adj. 静默的，无提示的'}
+    ]
+  },
+  {
+    title:'Idempotency: Making Retries Safe',
+    level:'进阶', tags:['api','幂等','分布式','系统设计','后端','面试'],
+    body:[
+      'Networks fail in the most inconvenient way possible: they fail after your request arrives but before the response comes back. The client does not know whether the operation happened.',
+      'Retrying is the obvious response, but retrying a payment is not the same as retrying a page load. If the first request succeeded and the response was lost, the retry charges the customer twice.',
+      'The fix is to make the operation idempotent: performing it twice has the same effect as performing it once. HTTP gives you this for free with GET, PUT and DELETE, which is why they are safe to retry automatically.',
+      'For POST, idempotency must be built. The standard approach is an idempotency key generated by the client, stored by the server alongside the result. A second request with the same key returns the stored result instead of executing again.'
+    ],
+    zh:['网络会以最麻烦的方式失败：请求已经到达了，但响应还没回来时连接断了。客户端于是不知道这个操作到底发生过没有。',
+        '重试是显然的应对，但"重试支付"和"重试加载页面"完全是两回事。如果第一次请求成功了、只是响应丢了，那么重试就会向客户重复扣款。',
+        '解法是让操作变成幂等的：执行两次与执行一次的效果相同。HTTP 用 GET、PUT、DELETE 免费给了你这一点——这就是它们可以自动重试的原因。',
+        '对 POST 来说，幂等必须自己造。标准做法是客户端生成一个幂等键（idempotency key），服务端把它和结果一起存下来。带着同一个键的第二次请求，直接返回已存的结果，而不再执行一遍。'],
+    vocab:[
+      {w:'inconvenient', p:'/ˌɪnkənˈviːniənt/', m:'adj. 不方便的，麻烦的'},
+      {w:'retry', p:'/ˌriːˈtraɪ/', v:'', m:'n./v. 重试'},
+      {w:'idempotent', p:'/ˌaɪdəmˈpəʊtnt/', m:'adj. 幂等的'},
+      {w:'idempotency key', p:'', m:'n. 幂等键'},
+      {w:'execute', p:'/ˈeksɪkjuːt/', m:'v. 执行'}
+    ]
+  },
+  {
+    title:'Choosing a Database Is Choosing a Set of Trade-offs',
+    level:'进阶', tags:['数据库','选型','nosql','架构','面试','后端'],
+    body:[
+      'The question "SQL or NoSQL" is asked far more often than it deserves. Both categories contain excellent systems, and the useful question is what access patterns and guarantees a particular project actually needs.',
+      'Relational databases give you a schema, joins, and transactions. They are extremely good when your data has structure, when relationships matter, and when consistency cannot be sacrificed. Twenty years of optimisation also means the tooling is mature.',
+      'Document stores trade joins for locality, keeping related data together in one readable object. That makes certain reads very fast and makes cross-document consistency your problem. Key-value stores push further, offering predictable latency at enormous scale with almost no query flexibility.',
+      'The honest answer in most interviews is to pick the boring option and justify it. Start relational. Move away only when you can name the specific constraint that relational storage cannot satisfy, and say what you are giving up in exchange.'
+    ],
+    zh:['"选 SQL 还是 NoSQL"这个问题被问到的频率，远超过它应得的。两个阵营里都有出色的系统，真正有用的问题是：某个项目实际需要什么样的访问模式和保证。',
+        '关系型数据库给你 schema、join 和事务。当你的数据有结构、关系很重要、且一致性不能牺牲时，它们表现极好。二十年的优化积累也意味着工具链很成熟。',
+        '文档存储用 join 换取了"局部性"：把相关数据放在一个可读的对象里。这让某些读取非常快，但也把跨文档一致性变成了你自己的问题。键值存储走得更远：在巨大规模下提供可预测的延迟，代价是几乎没有查询灵活性。',
+        '在大多数面试里诚实的答案是：选那个最保守的选项，然后论证它。先关系型。只有当你能指出"关系型存储无法满足的具体约束"时再换，并且说清楚你为此放弃了什么。'],
+    vocab:[
+      {w:'trade-off', p:'/ˈtreɪdɒf/', m:'n. 取舍，权衡'},
+      {w:'locality', p:'/ləʊˈkæləti/', m:'n. 局部性'},
+      {w:'mature', p:'/məˈtʃʊə/', m:'adj. 成熟的'},
+      {w:'predictable', p:'/prɪˈdɪktəbl/', m:'adj. 可预测的'},
+      {w:'justify', p:'/ˈdʒʌstɪfaɪ/', m:'v. 论证，justify'}
+    ]
+  },
+  {
+    title:'Microservices: The Problem They Solve Is Organisational',
+    level:'进阶', tags:['微服务','架构','分布式','团队协作','系统设计','面试'],
+    body:[
+      'Microservices are usually justified with technical language: independent scaling, technology freedom, resilience. In most successful cases the real driver was organisational, not technical.',
+      'When a hundred engineers commit to one deployable unit, every release becomes a negotiation. A queue forms. Small changes wait behind unrelated work. Splitting into services buys independent deployment, which buys independent decision-making.',
+      'The price is enormous and predictable. What was once a function call becomes a network request that can be slow, fail, or succeed without a response. Distributed transactions replace local ones. Debugging now spans several systems.',
+      'This is why the sensible default is a well-structured monolith, with clear module boundaries. Split when the coordination cost genuinely exceeds the operational cost. Splitting early trades a problem you understand for several you do not.'
+    ],
+    zh:['微服务通常用技术语言来论证：独立扩容、技术选型自由、弹性。但在大多数成功案例中，真正的驱动力是组织层面的，而不是技术层面的。',
+        '当一百个工程师往同一个可部署单元里提交代码时，每次发布都变成一场谈判。队伍排起来了，小的改动卡在与之无关的工作后面。拆成服务买来的是独立部署，而独立部署买来的是独立决策。',
+        '代价巨大且可预测：原本的函数调用变成了可能变慢、失败、或者"成功但没响应"的网络请求；本地事务被分布式事务取代；排查问题要横跨好几个系统。',
+        '这就是为什么理智的默认选择是"结构良好的单体"，配上清晰的模块边界。等到协调成本真正超过运维成本时再拆。过早拆分，等于用一个你理解的问题，换来好几个你不理解的。'],
+    vocab:[
+      {w:'resilience', p:'/rɪˈzɪliəns/', m:'n. 弹性，韧性'},
+      {w:'deployable', p:'/dɪˈplɔɪəbl/', m:'adj. 可部署的'},
+      {w:'boundary', p:'/ˈbaʊndri/', m:'n. 边界'},
+      {w:'coordination', p:'/kəʊˌɔːdɪˈneɪʃn/', m:'n. 协调'},
+      {w:'monolith', p:'/ˈmɒnəlɪθ/', m:'n. 单体（应用）'}
+    ]
+  },
+  {
+    title:'Consistency in Distributed Systems, Explained Simply',
+    level:'进阶', tags:['分布式','一致性','cap','架构','面试','系统设计'],
+    body:[
+      'When data lives on more than one machine, every write must be copied to the others. The copy takes time, and during that time the machines disagree. Consistency is the study of what that disagreement is allowed to look like.',
+      'A weak consistency model permits replicas to differ for a while, then quietly converge. This is what most web applications actually use, and it is why a comment you just posted may take a moment to appear in someone else\'s feed.',
+      'A strong model guarantees that a read always sees the most recent write. The cost is coordination: replicas must agree before responding, which means latency and reduced availability if a node is unreachable.',
+      'The CAP theorem is often quoted as "pick two", which is misleading. Partitions are not optional. The real choice is only what to sacrifice during a partition: refuse some requests to stay consistent, or answer everything and accept that some answers are stale.'
+    ],
+    zh:['当数据存在多台机器上时，每一次写入都必须复制到其他机器。复制需要时间，而在这段时间里，这些机器是不一致的。一致性研究的，就是这种"不一致"被允许长成什么样。',
+        '弱一致模型允许副本在一段时间内不同，然后悄悄收敛。大多数 Web 应用实际用的就是这一档，这也是为什么你刚发的评论可能要过一会儿才出现在别人的信息流里。',
+        '强一致模型保证：读永远能看到最新的写。代价是协调——副本必须先达成一致才能响应，这意味着延迟，以及某个节点不可达时可用性下降。',
+        'CAP 定理常被概括为"三选二"，这个说法有误导性：网络分区不是可选项。真正的选择只有一个——在分区发生时牺牲什么：拒绝部分请求以保持一致，还是有求必应、接受某些回答是过期的。'],
+    vocab:[
+      {w:'replica', p:'/ˈreplɪkə/', m:'n. 副本'},
+      {w:'converge', p:'/kənˈvɜːdʒ/', m:'v. 收敛，趋同'},
+      {w:'coordination', p:'/kəʊˌɔːdɪˈneɪʃn/', m:'n. 协调'},
+      {w:'partition', p:'/pɑːˈtɪʃn/', m:'n. 网络分区'},
+      {w:'misleading', p:'/ˌmɪsˈliːdɪŋ/', m:'adj. 有误导性的'}
+    ]
+  },
+  {
+    title:'Monitoring, Logging, and Knowing You Are Broken',
+    level:'进阶', tags:['运维','监控','日志','可观测性','devops','工程'],
+    body:[
+      'A service that is silently failing is worse than one that crashes. A crash is loud and gets fixed. A gradual degradation in success rate can go unnoticed for weeks while users quietly leave.',
+      'Logging records discrete events. Metrics record numbers over time. They answer different questions: logs tell you what happened in one specific case, metrics tell you whether things are getting worse overall. You need both, and confusing them leads to dashboards nobody reads.',
+      'Tracing connects them. A single user request generates a trace with a span per service it touched. When latency spikes, the trace shows which hop is responsible, which is usually far more useful than a wall of logs.',
+      'The common failure mode is monitoring what is easy instead of what matters. CPU usage is easy. "Percentage of checkout attempts that succeeded in under two seconds" is what actually indicates whether the business is working. Alert on the second category.'
+    ],
+    zh:['一个静默失败的服务，比一个崩溃的服务更糟。崩溃是响亮的，会被修；而成功率逐渐下降可能几周都没人注意，同时用户正在悄悄流失。',
+        '日志记录离散事件，指标记录随时间变化的数字。它们回答不同的问题：日志告诉你某一个具体案例里发生了什么，指标告诉你整体是不是在变差。两者都要有，而把它们混为一谈的结果就是没人看的仪表盘。',
+        '链路追踪（tracing）把两者连起来。一个用户请求会生成一条 trace，其中它碰到的每个服务都有一个 span。当延迟飙升时，trace 会指出是哪一跳造成的——这通常比一整屏日志有用得多。',
+        '常见的失败模式是"监控容易测的东西"而不是"监控重要的东西"。CPU 使用率很容易测；真正说明业务是否正常运转的，是"两秒内成功完成的结账请求占比"。告警要建在第二类指标上。'],
+    vocab:[
+      {w:'degradation', p:'/ˌdeɡrəˈdeɪʃn/', m:'n. 退化，劣化'},
+      {w:'discrete', p:'/dɪˈskriːt/', m:'adj. 离散的'},
+      {w:'trace', p:'/treɪs/', m:'n. 链路追踪'},
+      {w:'span', p:'/spæn/', m:'n.（追踪中的）跨度'},
+      {w:'alert', p:'/əˈlɜːt/', m:'v. 告警'}
+    ]
+  },
+  {
+    title:'Docker Images and the Layers Nobody Sees',
+    level:'基础', tags:['docker','容器','镜像','部署','运维','面试'],
+    body:[
+      'A Docker image is not a single file. It is a stack of read-only layers, each recording one set of changes. Understanding this stack explains most of the surprising things containers do.',
+      'Every instruction in a Dockerfile creates a layer. Layers are cached and shared between images. If two images both start from the same base, that base exists once on disk no matter how many images reference it.',
+      'Caching is why instruction order matters so much. Copying your source code before installing dependencies invalidates the dependency layer on every code change, forcing a full reinstall each build. Copy the dependency manifest first.',
+      'Layers are also why a deleted file does not shrink an image. Removing a large file in a later layer hides it but does not remove the earlier layer that contains it. For multi-stage builds, that is exactly what they are for.'
+    ],
+    zh:['一个 Docker 镜像不是单个文件，而是一摞只读层，每一层记录了一组变更。理解这摞层，就能解释容器里大多数令人意外的行为。',
+        'Dockerfile 里的每一条指令都会创建一层。层会被缓存，也会在镜像之间共享。如果两个镜像都基于同一个基础镜像，那么无论有多少镜像引用它，这个基础层在磁盘上只存在一份。',
+        '缓存机制就是"指令顺序如此重要"的原因。如果你在安装依赖之前就拷贝源码，那么每次改代码都会让依赖层失效，逼着每次构建都完整重装一遍。正确做法是先拷依赖清单。',
+        '层也是"删掉文件却不让镜像变小"的原因：在后一层里删除一个大文件，只是把它藏起来了，包含它的前一层依然在。多阶段构建（multi-stage build）正是为了解决这件事。'],
+    vocab:[
+      {w:'layer', p:'/ˈleɪə/', m:'n. 层'},
+      {w:'cache', p:'/kæʃ/', m:'v. 缓存'},
+      {w:'invalidate', p:'/ɪnˈvælɪdeɪt/', m:'v. 使失效'},
+      {w:'manifest', p:'/ˈmænɪfest/', m:'n. 清单文件'},
+      {w:'multi-stage build', p:'', m:'n. 多阶段构建'}
+    ]
+  },
+  {
+    title:'Infrastructure as Code: Your Servers Should Be in Git',
+    level:'进阶', tags:['devops','iac','terraform','运维','云原生','工程'],
+    body:[
+      'The traditional way to build a server is to log in and type commands. It works, and it leaves behind no record of what you did. Six months later nobody can explain why a particular setting exists.',
+      'Infrastructure as code replaces the commands with a description. You declare the servers, networks and permissions you want in a file, commit it, and let a tool make reality match. The file becomes both the documentation and the specification.',
+      'The immediate benefit is reproducibility. A new environment is not hand-built and mysterious, it is the same file applied somewhere else. The second benefit is review: infrastructure changes go through the same pull request process as application code.',
+      'The subtle benefit is that destruction becomes safe. When environments are described rather than artisanal, you can tear one down and recreate it, which is the only reliable way to prove that your description is actually complete.'
+    ],
+    zh:['传统上搭建一台服务器的方式是：登进去、敲命令。这能work，但它不会留下任何关于"你做了什么"的记录。半年后没人能解释某个特定配置为什么存在。',
+        '基础设施即代码（Infrastructure as Code）用一份描述取代了那些命令。你在文件里声明你想要的服务器、网络和权限，提交它，然后让工具把现实对齐过来。这份文件既是文档，也是规格说明。',
+        '直接的好处是可复现性。新环境不再是人手搭出来的一团谜，而是同一份文件在别处的应用结果。第二个好处是可评审：基础设施的变更和应用代码走同一套 PR 流程。',
+        '更微妙的好处是"销毁变得安全了"。当环境是被描述的、而非手工打磨出来的，你就可以拆掉一个再重建——而这是证明"你的描述确实完整"的唯一可靠方式。'],
+    vocab:[
+      {w:'reproducibility', p:'/ˌriːprəˌdjuːsəˈbɪləti/', m:'n. 可复现性'},
+      {w:'specification', p:'/ˌspesɪfɪˈkeɪʃn/', m:'n. 规格说明'},
+      {w:'artisanal', p:'/ˌɑːtɪˈzænl/', m:'adj. 手工打造的'},
+      {w:'tear down', p:'', m:'v. 拆除，销毁'},
+      {w:'permission', p:'/pəˈmɪʃn/', m:'n. 权限'}
+    ]
+  },
+  {
+    title:'The Twelve-Factor App, Fifteen Years Later',
+    level:'进阶', tags:['架构','部署','云原生','devops','工程','面试'],
+    body:[
+      'The twelve-factor methodology was written to describe what made Heroku-style applications work. It remains one of the few documents that is still worth reading in full, because the problems it names have not gone away.',
+      'Its central claim is that an application should be entirely self-contained and stateless, with all configuration supplied by the environment. The same artifact should run in development, staging and production without modification.',
+      'This is why twelve-factor apps never store configuration in code and never write to the local filesystem. Configuration comes from environment variables; state goes to a backing service. The process itself can be killed at any moment without losing anything.',
+      'The payoff is operational agility. Scaling becomes starting more processes. Deploying becomes replacing them. Rolling back becomes starting the previous version. Every one of these is simple precisely because the process holds nothing precious.'
+    ],
+    zh:['十二要素应用（twelve-factor app）方法论写出来，是为了描述"Heroku 式的应用为什么能work"。它仍然是少数值得完整读一遍的文档之一，因为它所命名的问题至今没有消失。',
+        '它的核心主张是：应用应当完全自包含、无状态，所有配置由环境提供。同一个构建产物，应当不做修改就能在开发、预发和生产环境运行。',
+        '这就是为什么十二要素应用从不把配置写在代码里、也从不写本地文件系统。配置来自环境变量，状态交给后端服务。进程本身可以在任何时刻被杀掉而不丢失任何东西。',
+        '回报是运维上的敏捷：扩容 = 多起几个进程；发布 = 替换它们；回滚 = 把上一个版本起起来。这些之所以都简单，恰恰是因为进程本身不持有任何珍贵的东西。'],
+    vocab:[
+      {w:'methodology', p:'/ˌmeθəˈdɒlədʒi/', m:'n. 方法论'},
+      {w:'self-contained', p:'/ˌself kənˈteɪnd/', m:'adj. 自包含的'},
+      {w:'artifact', p:'/ˈɑːtɪfækt/', m:'n. 构建产物'},
+      {w:'agility', p:'/əˈdʒɪləti/', m:'n. 敏捷性'},
+      {w:'precious', p:'/ˈpreʃəs/', m:'adj. 珍贵的'}
+    ]
+  },
+  {
+    title:'Authentication vs Authorisation',
+    level:'基础', tags:['安全','认证','授权','jwt','api','面试'],
+    body:[
+      'These two words are used interchangeably in casual conversation and must never be confused in a design review. One asks who you are. The other asks what you are allowed to do.',
+      'Authentication happens first. You present credentials and the system establishes an identity. Common mechanisms are passwords, sessions and tokens. If this step is wrong, everything downstream is meaningless.',
+      'Authorisation happens after and answers a different question. Being authenticated as an administrator in one organisation does not make you an administrator everywhere. This is where role-based and attribute-based access control live.',
+      'The practical value of keeping them separate is that they fail in different ways. Authentication failures are security incidents. Authorisation failures are usually logic bugs, and they are far more common than people expect.'
+    ],
+    zh:['在日常对话里这两个词常被混用，但在设计评审里绝对不能混淆。一个问的是"你是谁"，另一个问的是"你被允许做什么"。',
+        '认证（authentication）先发生：你出示凭据，系统据此确立一个身份。常见机制有密码、会话和令牌。如果这一步错了，后面的一切都没有意义。',
+        '授权（authorisation）在其后发生，回答的是另一个问题。在某个组织里被认证为管理员，并不意味着你在所有地方都是管理员。基于角色和基于属性的访问控制就属于这里。',
+        '把两者分开的实用价值在于：它们的失败方式不同。认证失败是安全事件；授权失败通常只是逻辑 bug——而后者比人们预想的常见得多。'],
+    vocab:[
+      {w:'authentication', p:'/ɔːˌθentɪˈkeɪʃn/', m:'n. 认证（你是谁）'},
+      {w:'authorisation', p:'/ˌɔːθəraɪˈzeɪʃn/', m:'n. 授权（你能做什么）'},
+      {w:'credential', p:'/krəˈdenʃl/', m:'n. 凭据'},
+      {w:'interchangeably', p:'/ˌɪntəˈtʃeɪndʒəbli/', m:'adv. 可互换地'},
+      {w:'downstream', p:'/ˈdaʊnstriːm/', m:'adj. 下游的'}
+    ]
+  },
+  {
+    title:'Why Passwords Should Never Be Stored',
+    level:'基础', tags:['安全','密码','哈希','加密','后端','面试'],
+    body:[
+      'A database of leaked passwords is one of the worst things a company can produce. The first defence is simple: never store the original password at all.',
+      'Instead you store a hash, a one-way transformation. When a user logs in, you hash what they typed and compare. The database never contains anything that can be reversed back into a password.',
+      'Plain hashing is not enough. Attackers use rainbow tables, precomputed dictionaries of common passwords. Adding a random salt per user makes precomputation useless, because the same password hashes differently for every account.',
+      'The current recommendation goes further and uses deliberately slow algorithms like bcrypt and Argon2. Speed is a feature of general-purpose hashing and a liability here. Slowing each attempt by a factor of a thousand turns a trivial crack into an expensive one.'
+    ],
+    zh:['一份泄露的密码数据库，是一家公司能造成的最糟糕的后果之一。第一道防线很简单：根本不存原始密码。',
+        '取而代之的是存哈希（hash）——一种单向变换。用户登录时，你把ta输入的内容做哈希再比对。数据库里从不包含任何能反推回密码的东西。',
+        '光做哈希还不够。攻击者会用彩虹表，也就是预先算好的常见密码字典。给每个用户加一个随机盐（salt）可以让预计算失效，因为同一个密码在每个账号下的哈希值都不同。',
+        '目前的建议还要更进一步：使用像 bcrypt 和 Argon2 这样刻意设计得慢的算法。在通用哈希里"快"是优点，在这里却是负债。把每次尝试放慢一千倍，就把一件轻而易举的破解变成了一件昂贵的事。'],
+    vocab:[
+      {w:'hash', p:'/hæʃ/', m:'n./v. 哈希'},
+      {w:'one-way', p:'/ˌwʌn ˈweɪ/', m:'adj. 单向的'},
+      {w:'rainbow table', p:'', m:'n. 彩虹表'},
+      {w:'salt', p:'/sɔːlt/', m:'n. 盐（密码学）'},
+      {w:'liability', p:'/ˌlaɪəˈbɪləti/', m:'n. 负债，累赘'}
+    ]
+  },
+  {
+    title:'Secrets Belong in the Environment, Not in Git',
+    level:'进阶', tags:['安全','密钥','devops','配置','工程','面试'],
+    body:[
+      'It happens in almost every project. A developer commits a configuration file with an API key inside, planning to clean it up later. The commit enters the history, and the key is now permanent.',
+      'Deleting the file in a later commit does not help. Git stores history, and anyone with access to the repository can retrieve the old version. The only real fix is to rotate the credential immediately.',
+      'The correct pattern is to keep secrets out of the codebase entirely. They live in environment variables locally, in a secret manager in deployed environments, and are injected at runtime. The repository contains only the code that reads them.',
+      'Add a pre-commit hook or a scanner that rejects commits containing high-entropy strings. The cost of that friction is a few seconds per commit. The cost of not having it is a leaked credential and a very unpleasant afternoon.'
+    ],
+    zh:['几乎每个项目都会发生：某位开发者提交了一个内含 API key 的配置文件，打算之后再清理。提交进了历史，而这个 key 从此永久存在。',
+        '在后面某次提交里删掉那个文件没有用。Git 保存历史，任何有仓库访问权的人都能取回旧版本。唯一真正的补救措施是立即轮换这个凭据。',
+        '正确的模式是让密钥完全不进代码库：本地放在环境变量里，部署环境放在密钥管理服务里，在运行时注入。仓库里只有读取它们的代码。',
+        '再加一个 pre-commit 钩子或扫描器，拒绝包含高熵字符串的提交。这点摩擦的成本是每次提交几秒钟；没有它的成本是一个泄露的凭据和一个非常难受的下午。'],
+    vocab:[
+      {w:'commit', p:'/kəˈmɪt/', m:'v. 提交（代码）'},
+      {w:'rotate', p:'/rəʊˈteɪt/', m:'v. 轮换（凭据）'},
+      {w:'entropy', p:'/ˈentrəpi/', m:'n. 熵，随机性'},
+      {w:'friction', p:'/ˈfrɪkʃn/', m:'n. 摩擦，阻力'},
+      {w:'inject', p:'/ɪnˈdʒekt/', m:'v. 注入'}
+    ]
+  },
+  {
+    title:'Container Security Starts With the Image',
+    level:'进阶', tags:['安全','docker','容器','供应链','运维','devops'],
+    body:[
+      'Containers are often assumed to be a security boundary. They are a packaging mechanism with some isolation attached, and the isolation defaults are weaker than most people expect.',
+      'The most basic mistake is running as root. Inside a container that is less catastrophic than on a host, but it turns any application vulnerability into a much more serious one. Set a non-root user in the Dockerfile.',
+      'The second is image bloat. Every package you install is code you did not write and will not patch. A minimal base image is not about disk space, it is about reducing the number of things that can be exploited.',
+      'The third is immutability. Pinning a base image to latest means every build can produce something different from the last without any code change. Pin to a digest, scan it, and rebuild deliberately.'
+    ],
+    zh:['容器常被默认为是一道安全边界。它其实是"打包机制 + 附带的一些隔离"，而隔离的默认强度比大多数人以为的要弱。',
+        '最基础的错误是以 root 身份运行。在容器里这比在宿主机上后果轻一些，但它会把任何应用漏洞都升级成严重得多的问题。在 Dockerfile 里设置一个非 root 用户。',
+        '第二个是镜像臃肿。你装的每一个包，都是你没写、也不会去修补丁的代码。用最小基础镜像不是为了省磁盘空间，而是为了减少"可被利用的东西"的数量。',
+        '第三个是不可变性。把基础镜像钉在 latest 上，意味着每次构建都可能产出一个和上次不同的东西，而你的代码一行没改。要钉到 digest 上，扫描它，并且有意识地重建。'],
+    vocab:[
+      {w:'boundary', p:'/ˈbaʊndri/', m:'n. 边界'},
+      {w:'catastrophic', p:'/ˌkætəˈstrɒfɪk/', m:'adj. 灾难性的'},
+      {w:'bloat', p:'/bləʊt/', m:'n. 臃肿，膨胀'},
+      {w:'exploit', p:'/ɪkˈsplɔɪt/', m:'v. 利用（漏洞）'},
+      {w:'digest', p:'/ˈdaɪdʒest/', m:'n.（镜像）摘要值'}
+    ]
+  },
+  {
+    title:'Machine Learning Is Not Magic, It Is Curve Fitting',
+    level:'基础', tags:['机器学习','ai','模型','数学','入门','面试'],
+    body:[
+      'The word learning suggests something mysterious is happening. In most practical cases, something quite ordinary is happening: a program is adjusting parameters to reduce the difference between its predictions and the correct answers.',
+      'Training data provides the pairing. For each example you have inputs and a known output. The model makes a guess, measures how wrong it was, and nudges its parameters in the direction that would have made it slightly less wrong.',
+      'Repeat that a few million times and the parameters settle into values that generalise. Nothing about this process understands the problem. It simply found a function that fits the examples well enough to work on new ones.',
+      'This is why data quality dominates everything else. A perfectly tuned model trained on mislabelled examples will confidently produce wrong answers. Almost every disappointment in a machine learning project traces back to the data, not the algorithm.'
+    ],
+    zh:['"学习"这个词暗示着某种神秘的事情正在发生。但在大多数实际场景里，发生的事情相当普通：一个程序在调整参数，以缩小它预测结果与正确答案之间的差异。',
+        '训练数据提供了这种配对关系。对每个样本，你有输入和一个已知的输出。模型猜一个答案，衡量自己错得多离谱，然后把参数往"能让错误稍微小一点"的方向推。',
+        '把这件事重复几百万次，参数就会稳定到一组能够泛化的值上。整个过程中没有任何东西"理解"了问题，它只是找到了一个对这些样本拟合得足够好、从而在新样本上也能用的函数。',
+        '这就是为什么数据质量压过其他一切。一个调得再完美的模型，如果训练样本的标签是错的，它也会自信地给出错误答案。机器学习项目里几乎每一次失望，追根溯源都是数据的问题，而不是算法的问题。'],
+    vocab:[
+      {w:'adjust', p:'/əˈdʒʌst/', m:'v. 调整'},
+      {w:'nudge', p:'/nʌdʒ/', m:'v. 轻推'},
+      {w:'generalise', p:'/ˈdʒenrəlaɪz/', m:'v. 泛化'},
+      {w:'mislabelled', p:'/ˌmɪsˈleɪbld/', m:'adj. 标注错误的'},
+      {w:'trace back', p:'', m:'v. 追溯到'}
+    ]
+  },
+  {
+    title:'Overfitting: When Your Model Memorises Instead of Learns',
+    level:'进阶', tags:['机器学习','过拟合','模型','评估','ai','进阶'],
+    body:[
+      'A model that scores ninety-nine per cent on its training data and sixty per cent on new data has not learned anything useful. It has memorised the answers.',
+      'Overfitting happens when a model is complex enough to capture noise as if it were signal. Every quirk of the training set becomes a rule. The model looks excellent in evaluation and fails immediately in production.',
+      'The standard defence is to hold data back. Split your dataset into training and validation portions, and never let the model see the validation set during training. If training accuracy keeps rising while validation accuracy falls, you are overfitting.',
+      'Regularisation, simpler models and more data all help. But the most reliable cure is more data, because overfitting is fundamentally a symptom of having far more parameters than examples.'
+    ],
+    zh:['一个模型在训练数据上得 99 分、在新数据上得 60 分，说明它什么都没学到。它把答案背下来了。',
+        '过拟合（overfitting）发生在模型复杂到足以把噪声也当成信号来捕捉时。训练集里的每一个怪癖都变成了一条规则。这种模型在评估里看起来极好，一到生产环境立刻失效。',
+        '标准的防御手段是"留出数据"。把数据集切成训练集和验证集，训练过程中绝不让模型看到验证集。如果训练准确率持续上升而验证准确率下降，你就在过拟合。',
+        '正则化、更简单的模型、更多数据都有帮助。但最可靠的一味药是更多数据——因为过拟合本质上是"参数量远远多于样本量"的症状。'],
+    vocab:[
+      {w:'memorise', p:'/ˈmeməraɪz/', m:'v. 记忆，背诵'},
+      {w:'overfitting', p:'/ˌəʊvəˈfɪtɪŋ/', m:'n. 过拟合'},
+      {w:'quirk', p:'/kwɜːk/', m:'n. 怪癖，偶发特征'},
+      {w:'regularisation', p:'/ˌreɡjələraɪˈzeɪʃn/', m:'n. 正则化'},
+      {w:'symptom', p:'/ˈsɪmptəm/', m:'n. 症状，表征'}
+    ]
+  },
+  {
+    title:'Prompts Are Programs You Have Not Debugged',
+    level:'进阶', tags:['ai','大模型','llm','提示词','工程','进阶'],
+    body:[
+      'Writing a prompt feels like writing English. In practice you are specifying behaviour for a system that is non-deterministic, and the discipline required is closer to programming than to copywriting.',
+      'The first principle is to be explicit about the output. If you need JSON, say so and give the schema. If a field is optional, say what to do when it is missing. Ambiguity in, ambiguity out.',
+      'The second is to provide examples. Language models are remarkably good at continuing a pattern. Three examples of input and desired output frequently outperform a paragraph of instructions.',
+      'The third is to treat prompts like code: version them, test them against a fixed set of cases, and re-run those tests whenever you change the model. A prompt that works today may behave differently after a model update, and without tests you will find out from users.'
+    ],
+    zh:['写提示词（prompt）感觉像在写英文。但实际上，你是在为一个非确定性的系统规定行为，所需要的纪律更接近编程，而不是文案写作。',
+        '第一条原则是明确输出形式。需要 JSON 就直说，并给出 schema。如果某个字段是可选的，就说清楚缺失时该怎么办。输入的歧义，会变成输出的歧义。',
+        '第二条是给例子。语言模型延续模式的能力惊人。三段"输入 + 期望输出"的示例，常常比一整段指令效果更好。',
+        '第三条是把提示词当代码对待：做版本管理、针对一组固定用例做测试，并且在每次换模型时重跑这些测试。今天能用的提示词，在模型更新后行为可能不同——没有测试的话，你会从用户那里得知这件事。'],
+    vocab:[
+      {w:'non-deterministic', p:'/ˌnɒndɪˌtɜːmɪˈnɪstɪk/', m:'adj. 非确定性的'},
+      {w:'explicit', p:'/ɪkˈsplɪsɪt/', m:'adj. 明确的'},
+      {w:'ambiguity', p:'/ˌæmbɪˈɡjuːəti/', m:'n. 歧义'},
+      {w:'schema', p:'/ˈskiːmə/', m:'n. 模式，结构定义'},
+      {w:'version', p:'/ˈvɜːʃn/', m:'v. 做版本管理'}
+    ]
+  },
+  {
+    title:'RAG: Giving a Model Facts It Was Never Trained On',
+    level:'进阶', tags:['ai','rag','大模型','检索','向量数据库','进阶'],
+    body:[
+      'A language model only knows what was in its training data. Ask it about your internal documentation and it will either admit ignorance or, worse, invent something plausible.',
+      'Retrieval augmented generation solves this by splitting the task in two. A retrieval step finds relevant passages from your own documents. A generation step then answers the question using only those passages as context.',
+      'The retrieval step is where most of the engineering lives. Documents are split into chunks, each chunk is converted into a vector, and similarity search finds the chunks closest to the question. Chunk size, overlap and embedding model all matter more than people initially expect.',
+      'The common failure is not the model, it is the retrieval. If the right passage never reaches the model, no amount of prompt engineering will save the answer. Always evaluate retrieval separately from generation, or you will optimise the wrong half.'
+    ],
+    zh:['语言模型只知道它训练数据里的东西。问它你们内部的文档，它要么承认不知道，要么更糟——编一个听起来很合理的东西出来。',
+        '检索增强生成（RAG）的解法是把任务拆成两半：检索步骤先从你自己的文档里找出相关段落；生成步骤再用这些段落作为上下文来回答问题。',
+        '工程量的绝大部分在检索这一步。文档被切成块（chunk），每块转成向量，然后用相似度搜索找出与问题最接近的块。块大小、重叠量和 embedding 模型的重要性，都比人们最初预想的要大。',
+        '常见的失败不在模型，而在检索。如果正确的段落根本没送到模型面前，再多的提示词工程也救不回答案。一定要把检索和生成分开评估，否则你会优化错的那一半。'],
+    vocab:[
+      {w:'retrieval', p:'/rɪˈtriːvl/', m:'n. 检索'},
+      {w:'augmented', p:'/ɔːɡˈmentɪd/', m:'adj. 增强的'},
+      {w:'plausible', p:'/ˈplɔːzəbl/', m:'adj. 看似合理的'},
+      {w:'chunk', p:'/tʃʌŋk/', m:'n. 数据块'},
+      {w:'embedding', p:'/ɪmˈbedɪŋ/', m:'n. 嵌入向量'}
+    ]
+  },
+  {
+    title:'Recommendation Systems: The Simplest One Often Wins',
+    level:'进阶', tags:['推荐系统','算法','协同过滤','数据','ai','工程'],
+    body:[
+      'Before neural networks, recommendation was mostly counting. Collaborative filtering says that if two people agreed on many items in the past, they will probably agree on new ones too.',
+      'Item-to-item variants are particularly effective. Rather than finding similar users, find items that tend to be consumed by the same people. This scales far better because item similarity can be precomputed.',
+      'The reason these simple methods remain competitive is that they capture the dominant signal directly. Most recommendation value comes from a handful of obvious relationships, not from subtle pattern discovery.',
+      'Where complexity earns its place is cold start and context. A brand new user has no history to compare. This is where content features, popularity priors and contextual signals matter, and where a more elaborate model can genuinely help.'
+    ],
+    zh:['在神经网络之前，推荐主要靠"数数"。协同过滤（collaborative filtering）的思路是：如果两个人过去在很多物品上意见一致，那么他们在新物品上很可能也会一致。',
+        '物品-物品的变体尤其有效。与其去找相似的用户，不如找出"倾向于被同一批人消费"的物品。这种做法的扩展性好得多，因为物品之间的相似度可以预先算好。',
+        '这些简单方法至今仍有竞争力的原因是：它们直接捕捉了最主要的那部分信号。推荐的价值大多来自少数几个显而易见的关联，而不是来自微妙的模式发现。',
+        '复杂模型真正有价值的地方是冷启动和上下文。一个全新用户没有任何历史可比较。这时内容特征、热度先验和上下文信号才开始重要，更精细的模型也才真正帮得上忙。'],
+    vocab:[
+      {w:'collaborative filtering', p:'', m:'n. 协同过滤'},
+      {w:'dominant', p:'/ˈdɒmɪnənt/', m:'adj. 主导的，主要的'},
+      {w:'cold start', p:'', m:'n. 冷启动'},
+      {w:'prior', p:'/ˈpraɪə/', m:'n. 先验（概率）'},
+      {w:'elaborate', p:'/ɪˈlæbərət/', m:'adj. 精密的，复杂的'}
+    ]
+  },
+  {
+    title:'How to Read Someone Else\'s Code',
+    level:'基础', tags:['工程','开源','阅读','调试','成长','面试'],
+    body:[
+      'Reading unfamiliar code is a skill that is almost never taught, yet it is what you will spend most of your career doing. The instinct to read top to bottom fails immediately on any real codebase.',
+      'Start from the entry point. Find where the program begins, whether that is a main function, a route definition or a command handler. Follow one concrete path through the system rather than trying to understand everything at once.',
+      'Use the debugger aggressively. Setting a breakpoint and inspecting state teaches you more in five minutes than an hour of static reading. The code will tell you what it actually does, which is often not what it appears to do.',
+      'Finally, change something small and watch what breaks. Nothing forces understanding of a dependency graph faster than removing a line and seeing which of twelve tests go red.'
+    ],
+    zh:['读陌生的代码是一项几乎没人教、但你职业生涯大部分时间都在用的技能。"从第一行读到最后一行"的直觉，在任何真实代码库上都会立刻失败。',
+        '从入口开始。找到程序从哪开始——不管是 main 函数、路由定义还是命令处理器。沿着一条具体的路径穿过系统，而不是试图一次理解所有东西。',
+        '大胆使用调试器。打一个断点、查看状态，五分钟教会你的东西比一小时的静态阅读还多。代码会告诉你它实际在做什么，而这常常不是它看起来在做的事。',
+        '最后，改一点小东西，然后看什么坏了。没有什么比"删掉一行、看着十二个测试里哪几个变红"能更快地逼你理解依赖关系。'],
+    vocab:[
+      {w:'entry point', p:'', m:'n. 入口点'},
+      {w:'breakpoint', p:'/ˈbreɪkpɔɪnt/', m:'n. 断点'},
+      {w:'aggressively', p:'/əˈɡresɪvli/', m:'adv. 积极地，大胆地'},
+      {w:'inspect', p:'/ɪnˈspekt/', m:'v. 检查，查看'},
+      {w:'dependency graph', p:'', m:'n. 依赖图'}
+    ]
+  },
+  {
+    title:'Debugging: Resist the Urge to Change Things',
+    level:'基础', tags:['调试','工程','方法论','问题排查','面试','成长'],
+    body:[
+      'The fastest way to fix a bug is usually to slow down. The instinct when something is broken is to change a line and see if it helps. That instinct turns one bug into three.',
+      'Start by making the failure reliable. If you cannot reproduce it on demand, you cannot tell whether you have fixed it. A bug you cannot reproduce is a bug you will meet again.',
+      'Then narrow the space. Comment out half the code, or log the value immediately before the failure. The goal is not to find the cause yet, it is to shrink the region where the cause can be. Binary search over code is astonishingly effective.',
+      'Only after you have located the exact line should you think about a fix. And the fix should explain the symptom. If it makes the symptom disappear without explaining it, you have probably just moved the bug somewhere quieter.'
+    ],
+    zh:['修 bug 最快的方式通常是慢下来。东西坏了的时候，直觉是改一行看看有没有用。这个直觉会把一个 bug 变成三个。',
+        '先让这个失败变得可复现。如果你不能按需复现它，你就无法判断自己修好了没有。一个无法复现的 bug，是一个你还会再遇到的 bug。',
+        '然后缩小范围。注释掉一半代码，或者在失败点前一行把值打出来。目标不是马上找到原因，而是缩小"原因可能存在的区域"。在代码上做二分查找，效果惊人地好。',
+        '只有在定位到确切那一行之后，才该去想怎么修。而且这个修法应当能解释这个症状。如果它让症状消失了却解释不了，那你多半只是把 bug 挪到了一个更安静的地方。'],
+    vocab:[
+      {w:'resist', p:'/rɪˈzɪst/', m:'v. 抵抗，克制'},
+      {w:'reproduce', p:'/ˌriːprəˈdjuːs/', m:'v. 复现'},
+      {w:'narrow', p:'/ˈnærəʊ/', m:'v. 缩小（范围）'},
+      {w:'binary search', p:'', m:'n. 二分查找'},
+      {w:'symptom', p:'/ˈsɪmptəm/', m:'n. 症状，表象'}
+    ]
+  },
+  {
+    title:'The Cost of a Bad Name',
+    level:'基础', tags:['工程','命名','可读性','重构','代码质量','面试'],
+    body:[
+      'Naming is the most frequently performed design activity in programming and the one with the worst feedback loop. A bad name compiles perfectly and fails silently.',
+      'The damage is cumulative. A variable called data forces every future reader to reconstruct its meaning from context. A function called process hides whether it mutates, whether it is expensive, and what it returns.',
+      'Good names encode intent rather than mechanism. UnpaidInvoices is better than invoiceList because it tells you what the collection means, not merely how it is stored. When the implementation changes, the good name survives.',
+      'The practical test is to read the name aloud in a sentence. If you cannot say what the code does using only the identifiers, the names are not carrying their weight, and every reader after you pays for it.'
+    ],
+    zh:['命名是编程里发生最频繁的设计活动，也是反馈回路最差的一个。一个糟糕的名字能完美编译通过，然后静默地失败。',
+        '损害是累积的。一个叫 data 的变量，逼着后面每一个读者从上下文里重建它的含义；一个叫 process 的函数，隐藏了它是否会修改状态、是否昂贵、返回什么。',
+        '好的名字编码的是"意图"，而不是"机制"。UnpaidInvoices 比 invoiceList 好，因为它告诉你这个集合意味着什么，而不只是它怎么存的。当实现变化时，好的名字能活下来。',
+        '实用的检验方法：把名字放进一个句子里读出来。如果你无法仅用这些标识符说清代码做了什么，那这些名字就没有承担起它们的责任——而此后每一个读者都要为此买单。'],
+    vocab:[
+      {w:'feedback loop', p:'', m:'n. 反馈回路'},
+      {w:'cumulative', p:'/ˈkjuːmjələtɪv/', m:'adj. 累积的'},
+      {w:'mutate', p:'/mjuːˈteɪt/', m:'v. 修改（状态）'},
+      {w:'intent', p:'/ɪnˈtent/', m:'n. 意图'},
+      {w:'carry weight', p:'', m:'习语：承担分量，起作用'}
+    ]
+  },
+  {
+    title:'Estimating Software: Why Everyone Is Wrong',
+    level:'进阶', tags:['工程','估算','项目管理','敏捷','团队协作','面试'],
+    body:[
+      'Software estimates are consistently too optimistic, and the reason is not laziness. It is that estimates are made about the part you understand and delivered including the part you do not.',
+      'The work divides into the known, the unknown and the unknown unknown. Only the first can be estimated with any confidence. The other two are where the schedule goes, and they are invisible at planning time.',
+      'Several habits reduce the damage. Estimate in ranges rather than single numbers, because a range communicates uncertainty honestly. Track your own past estimates against actuals, because most people are wrong in a consistent direction they can correct for.',
+      'Above all, do not treat an estimate as a commitment. An estimate is a guess made with current information. A commitment is a promise made with consequences. Confusing the two is how teams end up cutting tests to hit a date.'
+    ],
+    zh:['软件估算总是过于乐观，原因不是懒。而是：估算是针对"你理解的那部分"做的，而交付时却包含了"你不理解的那部分"。',
+        '工作可以分成三类：已知的、未知的、以及"未知的未知"。只有第一类能有信心地估算。另外两类才是进度被吃掉的地方，而它们在计划阶段是看不见的。',
+        '有几个习惯能减少损失：用区间而不是单个数字来估算，因为区间诚实地传达了不确定性；把自己的历史估算和实际值对照记录，因为大多数人的偏差方向是一致的、因而可以校正。',
+        '最重要的是，不要把估算当成承诺。估算是在当前信息下做的猜测；承诺是带着后果做出的保证。把两者混淆，正是团队为了赶上一个日期而砍掉测试的原因。'],
+    vocab:[
+      {w:'optimistic', p:'/ˌɒptɪˈmɪstɪk/', m:'adj. 乐观的'},
+      {w:'invisible', p:'/ɪnˈvɪzəbl/', m:'adj. 看不见的'},
+      {w:'commitment', p:'/kəˈmɪtmənt/', m:'n. 承诺'},
+      {w:'correct for', p:'', m:'v. 校正，修正'},
+      {w:'schedule', p:'/ˈʃedjuːl/', m:'n. 进度，排期'}
+    ]
+  },
+  {
+    title:'Writing Code for the Person Who Maintains It',
+    level:'基础', tags:['工程','可读性','代码质量','团队协作','重构','面试'],
+    body:[
+      'Code is read far more often than it is written. Yet almost all the pleasure of programming comes from writing, and almost none from reading, which explains why most code is optimised for the wrong activity.',
+      'The single most effective habit is to write for the reader\'s first pass. Prefer flat code to deeply nested code. Return early rather than wrapping the happy path in three levels of if. Put the important thing on the left.',
+      'Comments should explain why, not what. The code already says what it does. A comment saying increment counter adds nothing. A comment saying retry once because the upstream service drops the first request under load saves the next person an hour.',
+      'The test is simple and brutal. Come back to your own code in three months and try to change a behaviour. If you have to reconstruct your reasoning from scratch, you wrote it for the wrong person.'
+    ],
+    zh:['代码被阅读的次数远超被编写的次数。然而编程的乐趣几乎全部来自"写"，来自"读"的几乎为零——这就解释了为什么大多数代码是为错误的活动做了优化。',
+        '最有效的一个习惯是：为读者的"第一遍阅读"而写。优先写扁平代码而不是深嵌套代码；尽早 return，而不是把主流程包在三层 if 里；把重要的东西放在左边。',
+        '注释应当解释"为什么"，而不是"是什么"。代码本身已经说明了它在做什么。一句写着"计数器加一"的注释什么也没增加；而一句"这里重试一次，因为上游服务在高负载下会丢第一个请求"能替下一个人省下一小时。',
+        '检验方法简单而残酷：三个月后回到你自己的代码，试着改掉一个行为。如果你必须从头重建当时的推理，那你当时是为错误的人写的。'],
+    vocab:[
+      {w:'maintain', p:'/meɪnˈteɪn/', m:'v. 维护'},
+      {w:'nested', p:'/ˈnestɪd/', m:'adj. 嵌套的'},
+      {w:'happy path', p:'', m:'n. 正常路径，主流程'},
+      {w:'brutal', p:'/ˈbruːtl/', m:'adj. 残酷的'},
+      {w:'reconstruct', p:'/ˌriːkənˈstrʌkt/', m:'v. 重建'}
+    ]
+  },
+  {
+    title:'Client, Server, and the Conversation in Between',
+    level:'基础', tags:['网络','前端','后端','http','架构','面试'],
+    body:[
+      'Almost every application you use splits its work between two places. The client runs where the user is and handles what the user sees. The server runs somewhere else and handles what the user must not be trusted with.',
+      'The split exists for both performance and trust. Sending a small request is faster than shipping all the data, and keeping validation logic on the server prevents a client from declaring itself an administrator.',
+      'The conversation follows a pattern called request and response. The client asks a specific question, the server answers. The server never speaks first, which is why real-time updates require a separate mechanism such as a persistent connection.',
+      'Most performance problems on the web come down to this boundary. Every round trip costs latency, so reducing the number of requests usually helps more than making each request faster. A page that makes fifty small requests will feel slow no matter how quick the server is.'
+    ],
+    zh:['你用的几乎每个应用，都把工作分在两个地方：客户端运行在用户身边，负责用户看到的东西；服务端运行在别处，负责"不能信任用户去做"的事。',
+        '这种划分同时出于性能和信任两个考虑。发一个小请求，比把全部数据推下去更快；而把校验逻辑放在服务端，能防止客户端给自己宣布一个管理员身份。',
+        '这个对话遵循"请求—响应"模式：客户端问一个具体的问题，服务端回答。服务端从不主动开口——这就是为什么实时更新需要另配一套机制，比如长连接。',
+        'Web 上大多数性能问题都归结到这条边界上。每一次往返都要花延迟，所以要减少请求数量，通常比让每个请求更快更有效。一个发五十个小请求的页面，无论服务端多快，用起来都会慢。'],
+    vocab:[
+      {w:'client', p:'/ˈklaɪənt/', m:'n. 客户端'},
+      {w:'round trip', p:'', m:'n. 一次往返'},
+      {w:'latency', p:'/ˈleɪtənsi/', m:'n. 延迟'},
+      {w:'persistent connection', p:'', m:'n. 长连接'},
+      {w:'validation', p:'/ˌvælɪˈdeɪʃn/', m:'n. 校验'}
+    ]
+  },
+  {
+    title:'Redis: Speed Through Forgetting',
+    level:'进阶', tags:['redis','缓存','数据库','性能','后端','面试'],
+    body:[
+      'Redis is fast largely because it refuses to do slow things. It keeps everything in memory, which removes disk seeks from the read path, and it executes commands one at a time, which removes most locking.',
+      'Single-threaded execution sounds like a limitation. It is actually a design choice: no locks, no context switching, and every command is atomic by construction. This makes reasoning about concurrent updates far simpler than in a multi-threaded store.',
+      'The obvious question is durability. Redis does persist to disk, but the guarantees are different from a relational database. Depending on configuration, a crash can lose the last few writes, which is acceptable for a cache and unacceptable for a ledger.',
+      'That is the correct way to think about it. Redis is excellent as a cache, a session store, a rate limiter and a queue. It is not a replacement for your source of truth, and treating it as one is a design decision that ends badly.'
+    ],
+    zh:['Redis 快，很大程度上是因为它拒绝做慢的事情：把所有数据放在内存里，从而从读路径上消除了磁盘寻道；一次只执行一条命令，从而消除了大部分加锁。',
+        '单线程执行听起来像是限制，其实是设计选择：没有锁、没有上下文切换，而且每条命令在构造上就是原子的。这让"并发更新"的推理比多线程存储简单得多。',
+        '显而易见的问题就是持久性。Redis 确实会落盘，但它的保证和关系型数据库不同。取决于配置，一次崩溃可能丢掉最后几次写入——对缓存来说这是可接受的，对账本来说不是。',
+        '这才是正确的思考方式：Redis 作为缓存、会话存储、限流器和队列都很出色。它不是你的"真相源"的替代品，而把它当成替代品，是一个结局不佳的设计决策。'],
+    vocab:[
+      {w:'seek', p:'/siːk/', m:'n.（磁盘）寻道'},
+      {w:'single-threaded', p:'/ˌsɪŋɡl ˈθredɪd/', m:'adj. 单线程的'},
+      {w:'atomic', p:'/əˈtɒmɪk/', m:'adj. 原子的'},
+      {w:'durability', p:'/ˌdjʊərəˈbɪləti/', m:'n. 持久性'},
+      {w:'ledger', p:'/ˈledʒə/', m:'n. 账本，总账'}
+    ]
+  },
+  {
+    title:'APIs Change, and You Must Plan for It',
+    level:'进阶', tags:['api','版本管理','兼容性','后端','架构','面试'],
+    body:[
+      'Every API you publish becomes a promise. Someone builds against it, and from that moment any change is a potential outage on someone else\'s system.',
+      'The distinction that matters is between additive and breaking changes. Adding an optional field is safe. Renaming a field, changing a type, or making a required parameter mandatory is not, even if it seems like an improvement.',
+      'Versioning is the standard escape hatch. A new version lets you make the change you need while leaving old clients untouched. The cost is that you now maintain both, and the discipline required is to actually retire the old one on a schedule.',
+      'The best practice is to avoid needing versions at all. Design responses to be tolerant: clients should ignore unknown fields, and servers should accept partial updates. APIs that follow this rule can evolve for years without breaking anyone.'
+    ],
+    zh:['你发布的每一个 API 都变成了一个承诺。有人基于它开发，而从那一刻起，任何改动都可能是别人系统上的一次故障。',
+        '真正重要的区分是"新增性改动"和"破坏性改动"。增加一个可选字段是安全的；重命名字段、改变类型、或者把某个参数变成必填，都不安全——哪怕它看起来是个改进。',
+        '版本化是标准的逃生口。新版本让你能做必要的改动，同时不动老客户端。代价是你从此要同时维护两套，而所需的纪律是"真的按计划把老版本下掉"。',
+        '最佳实践是压根不需要版本化。把响应设计得宽容一些：客户端应当忽略不认识的字段，服务端应当接受部分更新。遵循这条规则的 API 可以演进好几年而不弄坏任何人的东西。'],
+    vocab:[
+      {w:'additive', p:'/ˈædətɪv/', m:'adj. 新增性的'},
+      {w:'breaking change', p:'', m:'n. 破坏性变更'},
+      {w:'escape hatch', p:'', m:'n. 逃生口，退路'},
+      {w:'retire', p:'/rɪˈtaɪə/', m:'v. 淘汰，下掉'},
+      {w:'tolerant', p:'/ˈtɒlərənt/', m:'adj. 宽容的'}
+    ]
+  },
+  {
+    title:'Why Your Tests Are Slow, and Why It Matters',
+    level:'进阶', tags:['测试','性能','工程','ci','自动化','面试'],
+    body:[
+      'A test suite that takes forty minutes will be run less often than one that takes forty seconds. This is not about patience, it is about the feedback loop, and feedback loops determine how fast teams can move safely.',
+      'The pyramid is the standard model. Many fast unit tests at the base, fewer integration tests in the middle, and a small number of end-to-end tests at the top. The shape exists because cost and confidence rise together as you go up.',
+      'The most common antipattern is the inverted pyramid: hundreds of slow end-to-end tests and almost no unit tests. They are brittle, they take forever, and when one fails it tells you almost nothing about where the problem is.',
+      'Speed work is therefore not a luxury. Parallelising tests, replacing real databases with in-memory equivalents where the behaviour is genuinely equivalent, and deleting tests that assert nothing useful are all legitimate engineering tasks with measurable returns.'
+    ],
+    zh:['一套要跑四十分钟的测试，被运行的频率一定低于一套四十秒的测试。这不是耐心问题，而是反馈回路问题——而反馈回路决定了一个团队能多快地安全前进。',
+        '测试金字塔是标准模型：底部是大量快速的单元测试，中间是较少的集成测试，顶部是少量的端到端测试。这个形状之所以成立，是因为越往上，成本与信心同时上升。',
+        '最常见的反模式是倒金字塔：几百个缓慢的端到端测试，几乎没有单元测试。它们脆弱、极其耗时，而且当其中一个失败时，几乎不能告诉你问题出在哪。',
+        '因此"让测试变快"不是奢侈品。并行化、在行为确实等价的地方用内存实现替换真实数据库、删掉那些什么都没断言的测试——这些都是有可衡量回报的正经工程任务。'],
+    vocab:[
+      {w:'feedback loop', p:'', m:'n. 反馈回路'},
+      {w:'pyramid', p:'/ˈpɪrəmɪd/', m:'n. 金字塔'},
+      {w:'antipattern', p:'/ˈæntipætn/', m:'n. 反模式'},
+      {w:'parallelise', p:'/ˈpærəlelaɪz/', m:'v. 并行化'},
+      {w:'measurable', p:'/ˈmeʒərəbl/', m:'adj. 可衡量的'}
+    ]
+  },
+  {
+    title:'Feature Flags: Shipping Without Shipping',
+    level:'进阶', tags:['部署','特性开关','devops','工程','灰度','架构'],
+    body:[
+      'A feature flag separates deployment from release. The code goes to production, but the behaviour stays off until you decide otherwise. These are two different decisions that used to be forced into one.',
+      'That separation is enormously useful. Risky changes can be merged early and enabled on a schedule. A problematic feature can be disabled in seconds without a rollback. A new interface can be shown to one per cent of users first.',
+      'The cost is real and often underestimated. Every flag is a branch, and every branch needs testing in both positions. A codebase with two hundred live flags has an effectively untestable number of configurations.',
+      'The discipline that makes flags work is removal. A flag should have an owner and an expiry date, and should be deleted once the feature is fully rolled out. Flags that outlive their purpose become permanent technical debt with a nicer name.'
+    ],
+    zh:['特性开关（feature flag）把"部署"和"发布"分开了。代码上了生产，但行为一直是关闭的，直到你决定打开。这两件事原本被强行绑在一起。',
+        '这个分离极其有用：有风险的改动可以早早合入，然后按计划启用；出问题的功能可以在几秒内关掉，无需回滚；新界面可以先给百分之一的用户看。',
+        '代价是真实的，而且常被低估。每个开关都是一个分支，而每个分支都需要在两种状态下被测试。一个有两百个活跃开关的代码库，其配置组合数量实际上已无法测试。',
+        '让开关机制真正work的纪律是"删除"。每个开关都应当有负责人和过期时间，并且在功能全量后删掉。活得比用途长的开关，会变成换了个好听名字的永久技术债。'],
+    vocab:[
+      {w:'deployment', p:'/dɪˈplɔɪmənt/', m:'n. 部署'},
+      {w:'rollback', p:'/ˈrəʊlbæk/', m:'n. 回滚'},
+      {w:'underestimate', p:'/ˌʌndərˈestɪmeɪt/', m:'v. 低估'},
+      {w:'expiry date', p:'', m:'n. 过期日期'},
+      {w:'outlive', p:'/ˌaʊtˈlɪv/', m:'v. 比……活得更久'}
+    ]
+  },
+  {
+    title:'Open Source Is a Collaboration Skill',
+    level:'基础', tags:['开源','github','团队协作','成长','求职','面试'],
+    body:[
+      'Contributing to open source is often framed as a way to build a portfolio. That is true, but the more durable benefit is that it teaches you to work inside constraints you did not set.',
+      'The first lesson is that a maintainer owes you nothing. They have their own job, their own priorities and a queue of other people asking for things. A pull request that ignores their conventions wastes their time and yours.',
+      'So start small. Fix a typo in documentation. Reproduce a bug and report it clearly with exact steps. These are genuinely valuable contributions, and they establish that you are someone who reads before writing.',
+      'Once you have that credibility, larger contributions land more easily. The same is true on a team: nobody trusts a large change from someone who has never made a small one.'
+    ],
+    zh:['参与开源常被包装成"积累作品集"的方式。这没错，但更持久的收益是：它教你如何在"不是你定的约束"下工作。',
+        '第一课是：维护者对你没有任何亏欠。他们有自己的工作、自己的优先级，还有一队人在向他们提需求。一个无视他们约定的 PR，浪费的是他们的时间，也是你的。',
+        '所以从小处开始。修一个文档里的错别字；复现一个 bug，并把确切的步骤清楚地报出来。这些是真正有价值的贡献，而且它们建立起一个印象：你是一个"先读后写"的人。',
+        '一旦有了这份信任，更大的贡献就更容易被接受。团队里也一样：没人会信任一个从没做过小改动的人提出的大改动。'],
+    vocab:[
+      {w:'portfolio', p:'/pɔːtˈfəʊliəʊ/', m:'n. 作品集'},
+      {w:'maintainer', p:'/meɪnˈteɪnə/', m:'n. 维护者'},
+      {w:'convention', p:'/kənˈvenʃn/', m:'n. 约定，惯例'},
+      {w:'credibility', p:'/ˌkredəˈbɪləti/', m:'n. 可信度，信任'},
+      {w:'durable', p:'/ˈdjʊərəbl/', m:'adj. 持久的'}
+    ]
+  },
+  {
+    title:'Talking About Your Project in an Interview',
+    level:'基础', tags:['面试','项目描述','求职','实习','英语','口语'],
+    body:[
+      'Most candidates describe their projects chronologically: first I did this, then I did that. It is a faithful account of the work and a poor answer to the question, because it gives the interviewer no way to judge anything.',
+      'A stronger structure has four beats. What the problem was. What you specifically did. What the measurable result was. What you would do differently now.',
+      'The third beat is where most people lose marks. I made the page load faster is a claim. I moved image processing to the server and the first meaningful paint dropped from 4.2 seconds to 1.3 seconds is evidence. Prepare numbers before the interview, not during it.',
+      'The fourth beat is the one that separates candidates. Being able to name a genuine weakness in your own project, and explain what you learned, signals far more seniority than claiming everything went well.'
+    ],
+    zh:['大多数候选人按时间顺序描述自己的项目：先做了这个，然后做了那个。这是对工作忠实的叙述，却是一个糟糕的回答——因为它没有给面试官任何可判断的东西。',
+        '更强的结构有四拍：问题是什么；你具体做了什么；可衡量的结果是什么；现在你会怎么改。',
+        '第三拍是大多数人丢分的地方。"我让页面变快了"是一个主张；"我把图片处理挪到服务端，首次有效绘制从 4.2 秒降到 1.3 秒"才是证据。数字要在面试前就准备好，不是面试中现想。',
+        '第四拍是拉开候选人差距的一拍。能指出自己项目里一个真实存在的不足，并说清你因此学到了什么——这比"一切都很顺利"体现出高得多的成熟度。'],
+    vocab:[
+      {w:'chronologically', p:'/ˌkrɒnəˈlɒdʒɪkli/', m:'adv. 按时间顺序地'},
+      {w:'faithful', p:'/ˈfeɪθfl/', m:'adj. 忠实的'},
+      {w:'measurable', p:'/ˈmeʒərəbl/', m:'adj. 可衡量的'},
+      {w:'seniority', p:'/ˌsiːniˈɒrəti/', m:'n. 资历，成熟度'},
+      {w:'genuine', p:'/ˈdʒenjuɪn/', m:'adj. 真实的，诚恳的'}
+    ]
+  },
+  {
+    title:'The Behavioral Interview Is a Technical Interview',
+    level:'基础', tags:['面试','行为面','star','求职','实习','团队协作'],
+    body:[
+      'Technical candidates often treat behavioral questions as filler between the real problems. This is a mistake, because these questions are evaluating something that is genuinely hard to assess from code alone.',
+      'What the interviewer is listening for is whether you can reason about people, trade-offs and failure. Can you disagree without being difficult? Do you take responsibility when something goes wrong? Do you know what you do not know?',
+      'The STAR structure works: Situation, Task, Action, Result. The critical part is spending most of your time on Action, because that is where your specific contribution lives. Candidates routinely spend ninety per cent of the answer on background.',
+      'Prepare six stories in advance and reuse them. A good story about a conflict you resolved, a deadline you missed, a decision you disagreed with and a mistake you made covers most of what will be asked.'
+    ],
+    zh:['技术候选人常把行为面当成"真题之间的过渡"。这是个错误，因为这些问题在评估的东西，恰恰是单靠代码很难判断的。',
+        '面试官在听的是：你是否能对"人、取舍和失败"进行推理。你能不能有分歧但不难相处？出问题时你会不会承担责任？你知不知道自己的边界在哪？',
+        'STAR 结构（情境、任务、行动、结果）是有效的。关键在于把大部分时间花在"行动"上，因为你具体的贡献就在那里。而候选人常常把百分之九十的篇幅用在铺垫背景上。',
+        '提前准备六个故事并反复复用。一个关于"你化解的冲突"、一个"你错过的截止日"、一个"你不认同的决策"、一个"你犯过的错误"——足以覆盖大部分会被问到的东西。'],
+    vocab:[
+      {w:'behavioral', p:'/bɪˈheɪvjərəl/', m:'adj. 行为方面的'},
+      {w:'filler', p:'/ˈfɪlə/', m:'n. 填充物，过渡内容'},
+      {w:'trade-off', p:'/ˈtreɪdɒf/', m:'n. 取舍'},
+      {w:'take responsibility', p:'', m:'v. 承担责任'},
+      {w:'routinely', p:'/ruːˈtiːnli/', m:'adv. 惯常地，routine地'}
     ]
   }
 ];
