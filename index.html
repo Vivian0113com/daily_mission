@@ -599,6 +599,57 @@ html[data-skin="indigo"][data-theme="dark"]{
 .sw-ins{background:linear-gradient(135deg,#8b3fc4,#e1306c,#f77737)}
 .sw-apple{background:linear-gradient(135deg,#1d1d1f 46%,#0071e3 54%)}
 
+/* ---------- AI Agent 专区 ---------- */
+.ag-hero{
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  padding:20px 24px;margin-bottom:18px;border-radius:var(--radius);
+  border:1px solid var(--primary-line);background:var(--primary-soft);
+}
+.ag-hero-l{flex:1;min-width:240px}
+.ag-hero-t{font-size:17px;font-weight:750;letter-spacing:-.3px;color:var(--text)}
+.ag-hero-d{font-size:12.8px;color:var(--text2);line-height:1.8;margin-top:7px}
+.ag-hero-r{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ag-hero-n{font-size:23px;font-weight:750;letter-spacing:-.8px;color:var(--primary);line-height:1.1;font-variant-numeric:tabular-nums}
+.ag-hero-u{font-size:11.5px;font-weight:600;color:var(--text3);margin-top:2px}
+.ag-hero-sep{width:1px;height:34px;background:var(--primary-line)}
+
+.ag-road{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));align-items:start}
+.ag-road .road{background:var(--surface)}
+.ag-road .road-h{flex-wrap:wrap;justify-content:space-between}
+.ag-road .road-goal{
+  padding:11px 16px;font-size:12.4px;color:var(--text2);line-height:1.75;
+  background:var(--surface3);border-bottom:1px solid var(--border);
+}
+.ag-road .road-goal b{color:var(--primary);font-weight:700}
+.ag-tag{
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;
+  color:var(--violet);background:var(--violet-soft);
+  border:1px solid color-mix(in srgb,var(--violet) 24%,transparent);
+}
+
+.ag-qa{display:flex;flex-direction:column;gap:9px}
+.ag-qa-it{border:1px solid var(--border);border-radius:11px;background:var(--surface2);overflow:hidden;transition:.18s}
+.ag-qa-it:hover{border-color:var(--primary-line)}
+.ag-qa-q{
+  display:flex;gap:10px;align-items:flex-start;padding:12px 14px;cursor:pointer;
+  font-size:12.9px;font-weight:650;line-height:1.7;
+}
+.ag-qa-lv{
+  flex-shrink:0;font-size:10.5px;font-weight:750;padding:2px 7px;border-radius:6px;margin-top:2px;
+  color:var(--amber);background:var(--amber-soft);
+  border:1px solid color-mix(in srgb,var(--amber) 24%,transparent);
+}
+.ag-qa-lv.adv{color:var(--violet);background:var(--violet-soft);border-color:color-mix(in srgb,var(--violet) 24%,transparent)}
+.ag-qa-lv.bonus{color:var(--green);background:var(--green-soft);border-color:color-mix(in srgb,var(--green) 24%,transparent)}
+.ag-qa-arw{margin-left:auto;flex-shrink:0;color:var(--text3);font-size:11px;transition:transform .2s}
+.ag-qa-it.on .ag-qa-arw{transform:rotate(180deg)}
+.ag-qa-a{
+  display:none;padding:0 14px 13px 14px;font-size:12.5px;color:var(--text2);line-height:1.85;
+  border-top:1px solid var(--border);padding-top:12px;
+}
+.ag-qa-it.on .ag-qa-a{display:block}
+.ag-qa-a b{color:var(--text);font-weight:700}
+
 /* =========================================================
    皮肤 A：Apple 极简
    ========================================================= */
@@ -1379,6 +1430,43 @@ html[data-skin="indigo"] .card-h h2{font-size:14.5px;font-weight:700;letter-spac
         <div class="card-h"><h2>🧩 每日算法入口</h2></div>
         <div class="card-b" style="display:flex;flex-direction:column;gap:10px" id="dailyCoding"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ================= AI Agent 专区 ================= -->
+  <div class="ag-hero">
+    <div class="ag-hero-l">
+      <div class="ag-hero-t">🤖 AI Agent 专区</div>
+      <div class="ag-hero-d">从「会写 prompt」到「能做一个上线的 Agent」。这条路线按 12 周排，五个阶段层层递进 —— 每个阶段都有一个「做完就算过关」的动手目标。</div>
+    </div>
+    <div class="ag-hero-r">
+      <div class="ag-hero-n">12</div><div class="ag-hero-u">周路线</div>
+      <div class="ag-hero-sep"></div>
+      <div class="ag-hero-n" id="agKcardCount">1 / 12</div><div class="ag-hero-u">知识卡</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:18px">
+    <div class="card-h">
+      <h2>🃏 Agent 核心知识点</h2>
+      <span class="sub">一卡一个概念，面试前过一遍</span>
+      <div class="sp"></div>
+      <button class="btn ghost sm" id="agKcardNext">换一个 ↻</button>
+    </div>
+    <div class="card-b"><div class="kcard" id="agKcard"></div></div>
+  </div>
+
+  <div style="padding:0 4px;margin-bottom:14px"><h2 style="font-size:14.5px;font-weight:700">🗺️ Agent 五阶段学习路线</h2></div>
+  <div class="ag-road" id="agRoad"></div>
+
+  <div class="grid g2" style="margin-top:22px">
+    <div class="card">
+      <div class="card-h"><h2>📚 Agent 学习资源</h2><span class="sub">先读架构指南，再动手</span></div>
+      <div class="card-b" style="display:flex;flex-direction:column;gap:10px" id="agRes"></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>🎤 Agent 岗面试高频问题</h2><span class="sub">点开看答题思路</span></div>
+      <div class="card-b ag-qa" id="agQa"></div>
     </div>
   </div>
 </section>
@@ -5419,6 +5507,127 @@ function renderKcard(){
 }
 $('#kcardNext').onclick = () => { kcardIdx = (kcardIdx + 1) % kcardPool().length; renderKcard(); };
 
+/* =========================================================
+   11.4b AI Agent 专区数据
+   ========================================================= */
+
+/* ---------- Agent 学习路线（五阶段，从会写 prompt 到能上线） ---------- */
+const AGENT_ROADMAP = [
+  {n:'① 打地基：把大模型用明白', em:'🧱', cls:'', tag:'第 1-2 周',
+   goal:'不再把模型当黑盒，知道它为什么会出错，以及能怎么补救',
+   steps:[
+     '搞懂 token、上下文窗口、温度、top_p 这些参数到底影响什么',
+     '分清「预训练 / 微调 / RAG / 提示工程」四者的定位与成本',
+     '理解幻觉的成因：模型是在预测下一个 token，不是在查数据库',
+     '会算成本：输入输出 token 数 × 单价，一次 Agent 任务要花多少钱',
+     '动手：用官方 SDK（OpenAI / Claude / 通义）写出第一个流式对话'
+   ]},
+  {n:'② 进核心：让模型会调用工具', em:'🔧', cls:'g', tag:'第 3-5 周',
+   goal:'这是「调用 API」和「写 Agent」的分水岭，务必亲手实现一遍',
+   steps:[
+     '理解 Function Calling / Tool Use 的完整协议与返回格式',
+     '手写一个 ReAct 循环：思考 → 调工具 → 看结果 → 再思考，直到完成',
+     '给模型接 3 个真实工具：查天气、读文件、算算术，体会工具描述怎么写才准',
+     '处理它一定会犯的错：参数格式错、死循环、该停不停',
+     '了解 MCP（Model Context Protocol）：工具的标准接口，正在成为行业共识'
+   ]},
+  {n:'③ 加记忆：从单轮到可持续对话', em:'🧠', cls:'', tag:'第 6-7 周',
+   goal:'让 Agent 记住该记的、忘掉该忘的，而不是把历史全塞进上下文',
+   steps:[
+     '短期记忆：滑动窗口 / 摘要压缩 / 只保留关键实体',
+     '长期记忆：把对话摘要写进向量库，需要时检索回来',
+     '理解 embedding 与向量检索：为什么「语义相近」能算出来',
+     '实现 RAG 最小闭环：切分 → 向量化 → 检索 → 拼进 prompt → 生成',
+     '学会评估检索质量，不然你分不清是「检索没找到」还是「模型没用上」'
+   ]},
+  {n:'④ 提能力：规划、多智能体与评估', em:'🧩', cls:'g', tag:'第 8-10 周',
+   goal:'单个 Agent 不够用时，知道怎么拆解任务和分工',
+   steps:[
+     '任务规划：让模型先出计划再执行，理解 Plan-and-Execute 与 ReAct 的取舍',
+     '多智能体：主管-工人、辩论、流水线三种典型拓扑，什么时候该用',
+     '理解主流框架的能力边界：LangChain / LlamaIndex / AutoGen / CrewAI',
+     '建评估集：准备 30-50 条真实用例，每次改动都跑一遍，看通过率',
+     '会用 tracing 工具看每一步的输入输出，不然线上出问题没法定位'
+   ]},
+  {n:'⑤ 做上线：工程化与成本控制', em:'🚀', cls:'', tag:'第 11-12 周',
+   goal:'能部署一个有人用的 Agent，而不只是本地跑通的 demo',
+   steps:[
+     '给 Agent 加护栏：最大步数、超时、工具白名单、危险操作二次确认',
+     '控制成本与延迟：缓存、小模型分流、并行调工具、流式输出',
+     '做可观测：记录每轮的 prompt / 工具调用 / token 消耗 / 耗时',
+     '准备兜底：模型挂了怎么办、工具超时怎么办、检索为空怎么办',
+     '动手交付：做一个能给自己或同学用的 Agent，写清 README 并部署上线'
+   ]}
+];
+
+/* ---------- Agent 核心知识点速查卡 ---------- */
+const AGENT_KCARDS = [
+  {tag:'概念 · 必问', t:'Agent 和「调 API 的聊天机器人」差在哪？',
+   p:'核心差在 <b>自主性</b>。普通调用是一次性的：输入 prompt，拿一次输出，结束。Agent 是一个<b>循环</b>——模型输出的不只是给用户看的话，还可能是「我要调用某个工具」的结构化指令；程序执行工具、把结果塞回上下文，再让模型继续决策，直到它认为任务完成。所以 Agent 需要三样东西：<b>模型（决策）+ 工具（行动）+ 记忆（状态）</b>。没有循环和工具，就只是套了壳的 chat。'},
+  {tag:'核心 · 必问', t:'ReAct 是什么？为什么几乎所有 Agent 都从它开始？',
+   p:'ReAct = <b>Reason + Act</b>，即「想一步、做一步、看结果、再想」。它在每一轮里让模型先输出一段推理（Thought），再决定调用哪个工具及参数（Action），程序执行后把结果（Observation）拼回上下文，进入下一轮。相比让模型直接给答案，ReAct 的好处是<b>把推理过程显式写出来</b>——既提高了复杂任务的准确率，也让出错时你能看到是哪一步想歪了。它是理解一切 Agent 框架的基石，务必手写一遍。'},
+  {tag:'核心 · 必问', t:'Function Calling 到底是怎么工作的？',
+   p:'你先把可用工具以<b>结构化 schema</b>（名字、作用描述、参数类型）的形式传给模型。模型不会真的执行函数，它只是判断「现在该调哪个」并<b>输出一段符合 schema 的 JSON 参数</b>。真正执行的是你的代码——你解析这段 JSON，调用本地函数，再把返回值作为一条新消息发回给模型。所以「工具描述写得准不准」直接决定模型会不会用对工具，这是最容易被低估的一环。'},
+  {tag:'协议 · 新趋势', t:'MCP 是什么？为什么值得现在就学？',
+   p:'MCP（Model Context Protocol）是一个<b>把「模型」和「工具/数据源」解耦的标准协议</b>。在它之前，每个应用都要为每个工具单独写适配代码，N 个模型 × M 个工具就是 N×M 份胶水。MCP 定义了统一的客户端-服务端接口，工具方实现一次，所有支持 MCP 的客户端都能用。它的价值类似 USB-C：<b>统一了插口</b>。现在是行业热点的早期，提前掌握在面试里是明确的加分项。'},
+  {tag:'记忆 · 必问', t:'Agent 的「记忆」一般怎么实现？',
+   p:'分两层。<b>短期记忆</b>就是当前上下文里的对话历史，问题是会越堆越长，常见处理是滑动窗口（只留最近 N 轮）、摘要压缩（把旧对话让模型总结成一段）、或只保留关键实体。<b>长期记忆</b>则把重要信息写进外部存储——通常是向量库，需要时按语义检索回来再拼进 prompt。还有个关键概念是<b>「该忘什么」</b>：把所有历史都塞进去不但贵，还会稀释重点、反而降低效果。'},
+  {tag:'RAG · 必问', t:'RAG 的完整链路有哪几步？',
+   p:'五步：<b>① 切分</b>——把文档拆成合适大小的片段（chunk），要兼顾语义完整和检索粒度；<b>② 向量化</b>——用 embedding 模型把每段变成向量存进向量库；<b>③ 检索</b>——把用户问题也向量化，找出最相近的 K 段；<b>④ 增强</b>——把检索到的内容作为上下文拼进 prompt；<b>⑤ 生成</b>——模型基于这些材料回答。注意它<b>不是训练</b>，知识和模型权重是分开的，所以更新知识只需重跑索引。'},
+  {tag:'RAG · 避坑', t:'RAG 效果差，怎么定位是检索问题还是生成问题？',
+   p:'按顺序排查：<b>先看检索回来的片段里有没有答案</b>。如果答案根本没被检索到，问题在切分策略、embedding 模型或相似度阈值，跟生成模型无关——这时候换更强的模型也没用。如果答案在材料里但模型答错了，才是 prompt 或生成的问题（比如材料太长被忽略、指令不够明确）。所以工程上一定要<b>把检索结果打日志</b>，否则你只能瞎调，这就是「可观测性」在 RAG 里的意义。'},
+  {tag:'架构 · 必问', t:'什么时候该用多智能体？什么时候是过度设计？',
+   p:'只有当任务<b>能被清晰拆成不同专长的子任务</b>，且拆开后的收益大于通信开销时才值得用。典型可行场景：一个负责调研、一个负责写、一个负责审；或主管 Agent 拆任务分给工人 Agent。但多智能体的问题很明显：<b>成本翻好几倍、延迟变长、错误会沿着链路传递和放大、调试极其困难</b>。经验法则是——先用单个 Agent 加好工具把它做满，实在撞墙了再拆。面试时能讲出这个取舍，比会背框架名更打动人。'},
+  {tag:'评估 · 加分项', t:'怎么衡量一个 Agent 好不好用？',
+   p:'别靠「感觉还行」。要做三件事：<b>① 建评估集</b>——收集 30-50 条真实用例，每条标注期望结果，每次改动都跑一遍看通过率；<b>② 分层归因</b>——是规划错了、工具调错了、还是检索没召回，分开统计才知道往哪优化；<b>③ 看得见每一步</b>——用 tracing 记录每轮的输入、输出、工具调用和耗时，出问题时能复现。另外成本和延迟也是指标：一个通过率 95% 但要 8 秒、一次三毛钱的 Agent，可能不如 90% 但 2 秒、五分钱的。'},
+  {tag:'工程 · 必问', t:'上线一个 Agent，最容易踩的坑是什么？',
+   p:'排第一的是 <b>无限循环</b>——模型反复调同一个工具或来回打转，必须有最大步数和超时兜底。第二是<b>成本失控</b>——上下文越滚越长，单次请求 token 数指数增长，要设定预算上限并做缓存。第三是<b>工具滥用</b>——模型可能调用删除、支付这类危险操作，必须做工具白名单和二次确认。第四是<b>没有兜底</b>——模型超时、工具报错、检索为空时要有降级路径，而不是整个流程直接崩掉。这四点写进面试回答，会显得你真做过东西。'},
+  {tag:'提示词 · 进阶', t:'Agent 里的提示词和普通聊天有什么不同？',
+   p:'普通聊天的 prompt 主要是「交代任务」，Agent 的 system prompt 更像<b>一份岗位说明书</b>，通常要包含：角色与目标、可用工具及各自的使用时机、工作流程步骤、输出格式约束、以及<b>边界规则</b>（哪些不能做、信息不足时该怎么办）。关键差异是 Agent 的 prompt 要<b>为多轮循环服务</b>——它得让模型知道「什么时候算做完」。另外工具描述本身就是 prompt 的一部分，写得含糊模型就会乱调。'},
+  {tag:'趋势 · 面试谈资', t:'现在做 Agent，哪些方向还有机会？',
+   p:'几个相对明确的方向：<b>垂直领域 Agent</b>——把某个行业的流程吃透做好，通用能力交给模型；<b>可靠性工程</b>——评估、可观测、护栏、成本优化，这是所有 Agent 落地都绕不开的刚需，且人才稀缺；<b>工具与协议生态</b>——MCP 这类标准周边的服务与工具建设；<b>多模态与端侧</b>——让 Agent 能看图、能操作界面、能在本地跑。共同点是：<b>纯调 API 的门槛在快速消失，值钱的是工程能力和领域理解</b>。'}
+];
+
+/* ---------- Agent 优质学习资源 ---------- */
+const AGENT_RESOURCES = [
+  {ic:'📐', t:'Anthropic · Building Effective Agents', d:'目前最务实的一篇 Agent 架构指南，明确区分 workflow 与 agent，反对过度设计。强烈建议先读这篇再动手。', u:'https://www.anthropic.com/engineering/building-effective-agents'},
+  {ic:'📘', t:'OpenAI · A Practical Guide to Building Agents', d:'官方出的实践手册，覆盖工具设计、护栏、评估，PDF 可下载，工程视角很正。', u:'https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf'},
+  {ic:'🔌', t:'MCP 官方文档', d:'Model Context Protocol 规范与教程，理解「模型如何标准化接工具」的最佳入口，现在学正是时候。', u:'https://modelcontextprotocol.io/'},
+  {ic:'🦜', t:'LangChain / LangGraph 文档', d:'最主流的 Agent 开发框架。建议先用裸 API 手写一遍循环，再用它，否则容易只会拼积木不懂原理。', u:'https://python.langchain.com/docs/tutorials/'},
+  {ic:'🧩', t:'LlamaIndex 文档', d:'RAG 与数据接入方向做得最细，文档里有大量可跑的最小示例，学检索增强从这入手。', u:'https://docs.llamaindex.ai/'},
+  {ic:'🎓', t:'DeepLearning.AI 短课程', d:'吴恩达团队出的免费短课（LangChain、Agentic RAG、多智能体等），一两个小时一课，上手极快。', u:'https://www.deeplearning.ai/short-courses/'},
+  {ic:'📕', t:'Hugging Face · Agents Course', d:'系统性的免费 Agent 课程，含 smolagents 等轻量框架实操，从概念到部署完整走一遍。', u:'https://huggingface.co/learn/agents-course/'},
+  {ic:'🧠', t:'Prompt Engineering Guide', d:'提示工程系统整理，含 ReAct、CoT、Self-Consistency 等 Agent 常用的推理范式说明。', u:'https://www.promptingguide.ai/'},
+  {ic:'📚', t:'RAG 综述论文（arXiv）', d:'检索增强生成的经典综述，把检索、生成、增强三块技术路线梳理得很清楚，适合建立全局认知。', u:'https://arxiv.org/abs/2312.10997'},
+  {ic:'🔭', t:'LangSmith · Tracing 与评估', d:'官方可观测平台，能看到 Agent 每一步的输入输出。建议从第一天就用，别等线上出问题才想起来。', u:'https://docs.smith.langchain.com/'},
+  {ic:'🧪', t:'AutoGen（微软）', d:'多智能体对话框架，适合研究 Agent 之间的协作拓扑，代码示例丰富。', u:'https://microsoft.github.io/autogen/'},
+  {ic:'👥', t:'CrewAI 文档', d:'角色协作式多智能体框架，概念直观（角色 + 任务 + 流程），适合快速验证多智能体想法。', u:'https://docs.crewai.com/'}
+];
+
+/* ---------- Agent 岗面试高频问题 ---------- */
+const AGENT_INTERVIEW = [
+  {q:'请解释一下 Agent 的工作原理，它和普通的大模型调用有什么区别？',
+   a:'从三要素讲：模型做决策、工具做行动、记忆存状态；核心是「循环」而不是一次性调用。再补一句对比——普通调用是 prompt 进、答案出；Agent 是模型输出「下一步做什么」，程序执行后再喂回去，反复直到完成。', lv:'基础'},
+  {q:'ReAct 框架的流程是什么？它解决了什么问题？',
+   a:'按 Thought → Action → Observation 三轮讲清循环，重点说价值：把推理显式化，复杂任务更准、出错可定位。最好补一句你手写过这个循环，以及遇到的真实问题（比如模型不输出停止信号）。', lv:'基础'},
+  {q:'Function Calling 的调用链路是怎样的？工具描述为什么重要？',
+   a:'强调模型不执行函数，只输出符合 schema 的 JSON 参数，真正执行的是你的代码。工具描述是 prompt 的一部分，写得模糊模型就会选错工具或传错参数——这是最容易被低估的环节。', lv:'基础'},
+  {q:'RAG 的完整流程？怎么解决检索效果差的问题？',
+   a:'五步链路讲全（切分/向量化/检索/增强/生成），然后按「先查检索、再查生成」的顺序做归因，说明要把检索结果打日志才能定位。可以补 chunk 大小、重叠、混合检索（关键词+向量）这些调优手段。', lv:'进阶'},
+  {q:'Agent 的记忆机制怎么设计？上下文不够长怎么办？',
+   a:'分短期与长期两层讲。短期用滑动窗口/摘要压缩/关键实体提取；长期写向量库按需检索。要点是承认「全塞进去又贵又稀释重点」，主动讲取舍会显得更真实。', lv:'进阶'},
+  {q:'多智能体架构适合什么场景？有什么代价？',
+   a:'先讲适用条件（任务可清晰拆分、专长差异大），再讲代价（成本倍增、延迟变长、错误沿链路放大、调试困难）。最后给结论：单 Agent 加好工具做满再说。这个取舍判断比背框架名更值钱。', lv:'进阶'},
+  {q:'你怎么评估一个 Agent 的效果？',
+   a:'三件事：建评估集（真实用例+期望结果）、分层归因（规划/工具/检索分开统计）、tracing 看每一步。补充成本与延迟也是指标，举例说明「慢而准」未必优于「快而够准」。', lv:'进阶'},
+  {q:'线上 Agent 出现无限循环或成本失控，你怎么排查和预防？',
+   a:'预防端：最大步数、超时、预算上限、工具白名单、结果缓存。排查端：靠 tracing 看每轮工具调用是否重复、上下文是否异常膨胀。讲具体数字（比如限制 10 步、单次请求预算）更有说服力。', lv:'进阶'},
+  {q:'你了解 MCP 吗？它解决了什么问题？',
+   a:'一句话：统一模型与工具的对接协议，把 N×M 份胶水降成 N+M。类比 USB-C。能说出「工具方实现一次，所有客户端可用」就到位了。这是当前热点，答上来是明显加分项。', lv:'加分'},
+  {q:'如果让你从零做一个 Agent 产品，你会怎么设计？',
+   a:'按「先定评估、再选架构」答：① 明确任务边界和成功标准；② 能单 Agent 就不多智能体；③ 工具描述当 prompt 认真写；④ 从第一天加 tracing 和护栏；⑤ 上线后靠评估集持续迭代。全程体现工程思维而非堆框架。', lv:'加分'}
+];
+
 function renderLearn(){
   const roads = ROADMAP_POOL[taskLevel] || ROADMAP_BASIC;
   const res   = RESOURCE_POOL[taskLevel] || RESOURCE_BASIC;
@@ -5450,6 +5659,52 @@ function renderLearn(){
       '<div style="flex:1;min-width:0"><div class="t">' + esc(x.t) + '</div>' +
       '<div class="d">' + esc(x.d) + '</div></div>' +
     '</a>').join('');
+
+  renderAgentZone();
+}
+
+/* ---------- AI Agent 专区渲染 ---------- */
+let agKcardIdx = hashStr('agent' + TODAY_STR) % AGENT_KCARDS.length;
+function renderAgKcard(){
+  const k = AGENT_KCARDS[agKcardIdx % AGENT_KCARDS.length];
+  $('#agKcard').innerHTML = '<div class="tag">' + esc(k.tag) + '</div><h3>' + esc(k.t) + '</h3><p>' + k.p + '</p>';
+  $('#agKcardCount').textContent = (agKcardIdx % AGENT_KCARDS.length + 1) + ' / ' + AGENT_KCARDS.length;
+}
+$('#agKcardNext').onclick = () => {
+  agKcardIdx = (agKcardIdx + 1) % AGENT_KCARDS.length;
+  renderAgKcard();
+};
+
+const AG_LV_CLS = { '基础':'', '进阶':'adv', '加分':'bonus' };
+function renderAgentZone(){
+  renderAgKcard();
+
+  $('#agRoad').innerHTML = AGENT_ROADMAP.map(r =>
+    '<div class="road"><div class="road-h"><span>' + r.em + ' ' + esc(r.n) + '</span>' +
+      '<span class="ag-tag">' + esc(r.tag) + '</span></div>' +
+      '<div class="road-goal">🎯 <b>过关目标</b>：' + esc(r.goal) + '</div>' +
+      '<div class="road-b">' +
+        r.steps.map((s, i) => '<div class="step"><span class="n' + (r.cls ? ' ' + r.cls : '') + '">' + (i+1) + '</span><span>' + esc(s) + '</span></div>').join('') +
+      '</div></div>').join('');
+
+  $('#agRes').innerHTML = AGENT_RESOURCES.map(r =>
+    '<a class="res" href="' + r.u + '" target="_blank" rel="noopener">' +
+      '<div class="ic">' + r.ic + '</div>' +
+      '<div style="flex:1;min-width:0"><div class="t">' + esc(r.t) + '</div>' +
+      '<div class="d">' + esc(r.d) + '</div>' +
+      '<div class="u">' + esc(r.u.replace('https://','')) + '</div></div>' +
+    '</a>').join('');
+
+  $('#agQa').innerHTML = AGENT_INTERVIEW.map((x, i) =>
+    '<div class="ag-qa-it" data-i="' + i + '">' +
+      '<div class="ag-qa-q"><span class="ag-qa-lv ' + (AG_LV_CLS[x.lv] || '') + '">' + esc(x.lv) + '</span>' +
+      '<span style="flex:1;min-width:0">' + esc(x.q) + '</span><span class="ag-qa-arw">▾</span></div>' +
+      '<div class="ag-qa-a">' + esc(x.a) + '</div>' +
+    '</div>').join('');
+
+  $$('#agQa .ag-qa-it').forEach(it => {
+    it.querySelector('.ag-qa-q').onclick = () => it.classList.toggle('on');
+  });
 }
 
 /* =========================================================
